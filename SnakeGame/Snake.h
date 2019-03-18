@@ -50,6 +50,7 @@ public:
 	void Floating();
 	// Adds new segment to snake
 	void GrowTail();
+	bool DeadCheck();
 	// Ends game
 	virtual void Dead(sf::RenderWindow & window, int &score);
 	// Returns screen position

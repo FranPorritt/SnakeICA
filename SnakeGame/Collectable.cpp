@@ -12,6 +12,11 @@ Collectable::~Collectable()
 {
 }
 
+bool Collectable::Alive()
+{
+	return aliveFlag;
+}
+
 void Collectable::AliveCheck()
 {
 	srand(time(0));
@@ -48,7 +53,7 @@ void Collectable::Render(sf::RenderWindow& window, int &screenWidth, int &screen
 sf::Vector2f Collectable::NewScreenPos(sf::Vector2f &screenPos)
 {
 	float x = (rand() % 50 + 1) * 20; // FIX MAGIC NUMBERS
-	float y = (rand() % 37 + 1) * 20;
+	float y = (rand() % 36 + 1) * 20;
 
 	screenPos = { x,y };
 	isPickedUp = false;

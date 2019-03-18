@@ -16,6 +16,7 @@ public:
 	Collectable(sf::Vector2f screenPosArg, sf::Color colorArg, float radiusArg);
 	~Collectable();
 
+	bool Alive();
 	// Checks if collectable is active
 	void AliveCheck();
 	// Makes collectable inactive and calls NewScreenPos

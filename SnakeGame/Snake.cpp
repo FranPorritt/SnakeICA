@@ -175,6 +175,11 @@ void Snake::GrowTail()
 	SegmentList.push_front(screenPos);
 }
 
+bool Snake::DeadCheck()
+{
+	return isDead;
+}
+
 void Snake::Dead(sf::RenderWindow & window, int &score)
 {
 	std::cout << "Game Over" << std::endl;
