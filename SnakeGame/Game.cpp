@@ -12,7 +12,7 @@ Game::~Game()
 {
 }
 
-void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos)
+void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos, int &score)
 {
 	sf::Font font;
 	if (!font.loadFromFile("F25_Bank_Printer.ttf"))
@@ -61,7 +61,7 @@ void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeigh
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
 		{
-			AIRun(window, screenWidth, screenHeight, waterScreenPos);
+			AIRun(window, screenWidth, screenHeight, waterScreenPos, score);
 		}
 
 		window.display();
@@ -127,8 +127,8 @@ void Game::Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf
 	for (int collectableIndex = 0; collectableIndex < maxActiveCollectables; collectableIndex++)
 	{
 		// Finds random screen position
-		float x = (rand() % 50 + 1) * 20;
-		float y = (rand() % 36 + 1) * 20;
+		float x = (rand() % 50) * 20;
+		float y = (rand() % 36) * 20;
 
 		// Checks collectable doesn't spawn above water
 		if (y < water->GetScreenPos().y || y >= screenHeight)
@@ -218,7 +218,7 @@ void Game::Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf
 	}
 }
 
-void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos)
+void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos, int &score)
 {
 	sf::Clock clock;
 	srand(time(0));
@@ -423,6 +423,11 @@ void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, 
 			waterLeak = 0;
 		}
 		waterLeak++;
+
+		if (playerSnake->GetScreenPos() == aiSnake->GetScreenPos())
+		{
+			playerSnake->Dead(window, score);
+		}
 
 		window.display();
 		window.clear();

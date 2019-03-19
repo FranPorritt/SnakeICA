@@ -15,7 +15,7 @@
 
 using namespace std;
 
-int main(sf::Vector2f &waterScreenPos)
+int main(sf::Vector2f &waterScreenPos, int &score)
 {  
 	int screenWidth = 1000;
 	int screenHeight = 750;
@@ -25,7 +25,7 @@ int main(sf::Vector2f &waterScreenPos)
     std::cout << "SnakeGame: Starting" << std::endl;
 
 	Game* snakeGame = new Game();
-	snakeGame->MainMenu(window, screenWidth, screenHeight, waterScreenPos);
+	snakeGame->MainMenu(window, screenWidth, screenHeight, waterScreenPos, score);
 
     std::cout << "SnakeGame: Finished" << std::endl;
 
