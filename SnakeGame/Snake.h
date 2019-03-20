@@ -60,6 +60,8 @@ public:
 
 	//Displays air remaining
 	void DisplayAir(sf::RenderWindow & window);
+	// Displays Score
+	void DisplayScore(sf::RenderWindow & window);
 	//Displays drowning warning
 	void DrowningText(sf::RenderWindow & window);
 };

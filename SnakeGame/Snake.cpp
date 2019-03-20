@@ -142,6 +142,7 @@ void Snake::Update(int &screenWidth, int &screenHeight, sf::RenderWindow & windo
 
 	movementSteps++;
 	DisplayAir(window);
+	DisplayScore(window);
 }
 
 void Snake::AboveWater(int &screenWidth)
@@ -232,6 +233,26 @@ void Snake::DisplayAir(sf::RenderWindow & window)
 	}
 }
 
+void Snake::DisplayScore(sf::RenderWindow & window)
+{
+	sf::Font font;
+	if (!font.loadFromFile("ka1.ttf"))
+	{
+		std::cout << "ERROR" << std::endl;
+	}
+
+	sf::Text scoreText;
+	scoreText.setFont(font);
+	scoreText.setCharacterSize(20);
+	scoreText.setPosition(900, 15);
+	scoreText.setString("SCORE: " + std::to_string(score));
+	scoreText.setFillColor(sf::Color::Red);
+
+	scoreText.setOrigin(floor(scoreText.getLocalBounds().width / 2), floor(scoreText.getLocalBounds().height / 2));
+
+	window.draw(scoreText);
+}
+
 void Snake::DrowningText(sf::RenderWindow & window)
 {
 	sf::Font font;
@@ -245,7 +266,7 @@ void Snake::DrowningText(sf::RenderWindow & window)
 	drowningText.setCharacterSize(50);
 	drowningText.setPosition(350, 600);
 	drowningText.setString("DROWNING!");
-	drowningText.setFillColor(sf::Color::Red);
+	drowningText.setFillColor(sf::Color::White);
 
 	window.draw(drowningText);
 }
