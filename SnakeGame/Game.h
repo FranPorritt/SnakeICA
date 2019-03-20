@@ -12,6 +12,8 @@ protected:
 
 	int waterLeak = 0;
 
+
+	// Consider moving this to AISnake.h
 	std::vector<int> AICollectableDistance;
 	int xDistance = 0;
 	int yDistance = 0;
