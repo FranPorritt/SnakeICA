@@ -22,6 +22,16 @@ void Water::Leak()
 	waterScreenPos.y += 20.0f;
 }
 
+void Water::MenuLeak()
+{
+	waterScreenPos.y += 0.5f;
+}
+
+void Water::MenuPos()
+{
+	waterScreenPos = { 0,450 };
+}
+
 sf::Vector2f Water::GetScreenPos()
 {
 	return waterScreenPos;

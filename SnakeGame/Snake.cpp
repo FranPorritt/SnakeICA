@@ -198,19 +198,36 @@ void Snake::DisplayAir(sf::RenderWindow & window)
 {
 	float airLeft = (100 - movementSteps) * 2;
 
+	sf::Font font;
+	if (!font.loadFromFile("ka1.ttf"))
+	{
+		std::cout << "ERROR" << std::endl;
+	}
+
+	sf::Text airText;
+	airText.setFont(font);
+	airText.setCharacterSize(20);
+	airText.setPosition(35, 15);
+	airText.setString("AIR: ");
+	airText.setFillColor(sf::Color::Red);
+
+	airText.setOrigin(floor(airText.getLocalBounds().width / 2), floor(airText.getLocalBounds().height / 2));
+
 	sf::RectangleShape airBackground;
 	airBackground.setSize({ 200,20 });
 	airBackground.setFillColor(sf::Color::White);
-	airBackground.setPosition({ 10,10 });
+	airBackground.setPosition({ 60,10 });
 
 	sf::RectangleShape airRemaining;
 	airRemaining.setSize({ airLeft, 20 });
 	airRemaining.setFillColor(sf::Color::Green);
-	airRemaining.setPosition({ 10,10 });
+	airRemaining.setPosition({ 60,10 });
+	
+	window.draw(airText);
+	window.draw(airBackground);
 
 	if (!isDrowning)
 	{
-		window.draw(airBackground);
 		window.draw(airRemaining);
 	}
 }
@@ -218,7 +235,7 @@ void Snake::DisplayAir(sf::RenderWindow & window)
 void Snake::DrowningText(sf::RenderWindow & window)
 {
 	sf::Font font;
-	if (!font.loadFromFile("F25_Bank_Printer.ttf"))
+	if (!font.loadFromFile("ka1.ttf"))
 	{
 		std::cout << "ERROR" << std::endl;
 	}

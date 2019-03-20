@@ -14,11 +14,15 @@ Game::~Game()
 
 void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos, int &score)
 {
+	sf::Clock clock;
 	sf::Font font;
-	if (!font.loadFromFile("F25_Bank_Printer.ttf"))
+	if (!font.loadFromFile("ka1.ttf"))
 	{
 		std::cout << "ERROR" << std::endl;
 	}
+
+	Water* water = new Water(sf::Color::Blue, { (float)screenWidth, (float)screenHeight});
+	water->MenuPos();
 
 	while (window.isOpen())
 	{
@@ -36,20 +40,28 @@ void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeigh
 			}
 		}
 
+		while (clock.getElapsedTime().asMilliseconds() < 100);
+		clock.restart();
+
+		water->Render(window);
+
 		sf::Text titleText;
 		titleText.setFont(font);
 		titleText.setCharacterSize(50);
-		titleText.setPosition(screenWidth/2 -100, screenHeight/2 - 50);
+		titleText.setPosition(screenWidth/2, screenHeight/3);
 		titleText.setString("SNAKE");
 		titleText.setFillColor(sf::Color::Green);
 
+		titleText.setOrigin(floor(titleText.getLocalBounds().width / 2), floor(titleText.getLocalBounds().height / 2));
 
 		sf::Text menuText;
 		menuText.setFont(font);
 		menuText.setCharacterSize(30);
-		menuText.setPosition(300, 500);
-		menuText.setString("Press SPACE to play");
+		menuText.setPosition(screenWidth/2, screenHeight/2);
+		menuText.setString("PRESS SPACE TO PLAY");
 		menuText.setFillColor(sf::Color::Red);
+
+		menuText.setOrigin(floor(menuText.getLocalBounds().width / 2), floor(menuText.getLocalBounds().height / 2));
 
 		window.draw(titleText);
 		window.draw(menuText);
@@ -64,6 +76,8 @@ void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeigh
 			AIRun(window, screenWidth, screenHeight, waterScreenPos, score);
 		}
 
+		water->MenuLeak();
+
 		window.display();
 		window.clear();
 	}
@@ -72,7 +86,7 @@ void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeigh
 void Game::GameOverScreen(sf::RenderWindow& window, int &score)
 {
 	sf::Font font;
-	if (!font.loadFromFile("F25_Bank_Printer.ttf"))
+	if (!font.loadFromFile("ka1.ttf"))
 	{
 		std::cout << "ERROR" << std::endl;
 	}
@@ -95,17 +109,21 @@ void Game::GameOverScreen(sf::RenderWindow& window, int &score)
 
 		sf::Text gameOverText;
 		gameOverText.setFont(font);
-		gameOverText.setCharacterSize(50);
-		gameOverText.setPosition(350, 325);
+		gameOverText.setCharacterSize(75);
+		gameOverText.setPosition(500, 100);
 		gameOverText.setString("GAME OVER");
-		gameOverText.setFillColor(sf::Color::Red);
+		gameOverText.setFillColor(sf::Color::Red); 
+		
+		gameOverText.setOrigin(floor(gameOverText.getLocalBounds().width / 2), floor(gameOverText.getLocalBounds().height / 2));
 
 		sf::Text scoreText;
 		scoreText.setFont(font);
 		scoreText.setCharacterSize(50);
-		scoreText.setPosition(350, 500);
+		scoreText.setPosition(500, 500);
 		scoreText.setString("SCORE: " + std::to_string(score));
 		scoreText.setFillColor(sf::Color::Red);
+
+		scoreText.setOrigin(floor(scoreText.getLocalBounds().width / 2), floor(scoreText.getLocalBounds().height / 2));
 
 		window.draw(gameOverText);
 		window.draw(scoreText);
@@ -199,7 +217,7 @@ void Game::Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf
 		}
 
 		// Lowers water level
-		if (waterLeak >= 20)
+		if (waterLeak >= 12)
 		{
 			water->Leak();
 			waterLeak = 0;
@@ -231,8 +249,8 @@ void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, 
 	for (int collectableIndex = 0; collectableIndex < maxActiveCollectables; collectableIndex++)
 	{
 		// Finds random screen position
-		float x = (rand() % 50 + 1) * 20;
-		float y = (rand() % 36 + 1) * 20;
+		float x = (rand() % 50) * 20;
+		float y = (rand() % 36) * 20;
 
 		// Checks collectable isn't spawning above water
 		if (y < water->GetScreenPos().y || y >= screenHeight)
