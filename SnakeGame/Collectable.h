@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Water.h"
 
 class Collectable
 {
@@ -20,11 +21,11 @@ public:
 	// Checks if collectable is active
 	void AliveCheck();
 	// Makes collectable inactive and calls NewScreenPos
-	void PickedUp();
+	void PickedUp(Water& water, int &screenHeight);
 	// Draws the collectable
 	void Render(sf::RenderWindow& window, int &screenWidth, int &screenHeight);
 	// Gets new random screen position
-	sf::Vector2f NewScreenPos(sf::Vector2f &screenPos);
+	sf::Vector2f NewScreenPos(sf::Vector2f &screenPos, Water& water, int &screenHeight);
 	// Returns screen position
 	sf::Vector2f GetScreenPos();
 	// Makes sure collectables aren't out of playing field

@@ -1,4 +1,5 @@
 #include "Collectable.h"
+#include "Water.h"
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,11 +28,11 @@ void Collectable::AliveCheck()
 	}
 }
 
-void Collectable::PickedUp()
+void Collectable::PickedUp(Water& water, int &screenHeight)
 {
 	aliveFlag = false;
 	isPickedUp = true;
-	NewScreenPos(screenPos);
+	NewScreenPos(screenPos, water, screenHeight);
 }
 
 void Collectable::Render(sf::RenderWindow& window, int &screenWidth, int &screenHeight)
@@ -50,10 +51,16 @@ void Collectable::Render(sf::RenderWindow& window, int &screenWidth, int &screen
 	}
 }
 
-sf::Vector2f Collectable::NewScreenPos(sf::Vector2f &screenPos)
+sf::Vector2f Collectable::NewScreenPos(sf::Vector2f &screenPos, Water& water, int &screenHeight)
 {
 	float x = (rand() % 50 + 1) * 20; // FIX MAGIC NUMBERS
 	float y = (rand() % 36 + 1) * 20;
+
+	// Checks collectable doesn't spawn above water
+	do
+	{
+		y = (rand() % 36 + 1) * 20;
+	} while (y < water.GetScreenPos().y);
 
 	screenPos = { x,y };
 	isPickedUp = false;

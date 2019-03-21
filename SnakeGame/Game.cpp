@@ -189,7 +189,7 @@ void Game::Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf
 			// Checks for collisions with player
 			if (c->GetScreenPos() == playerSnake->GetScreenPos())
 			{
-				c->PickedUp();
+				c->PickedUp(*water, screenHeight);
 				playerSnake->GrowTail();
 			}
 
@@ -299,14 +299,14 @@ void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, 
 			// Checks for collisions with player
 			if (c->GetScreenPos() == playerSnake->GetScreenPos())
 			{
-				c->PickedUp();
+				c->PickedUp(*water, screenHeight);
 				playerSnake->GrowTail();
 			}
 
 			// Checks for collisions with ai
 			if (c->GetScreenPos() == aiSnake->GetScreenPos())
 			{
-				c->PickedUp();
+				c->PickedUp(*water, screenHeight);
 				aiSnake->GrowTail();
 				std::cout << "PICKED UP" << std::endl;
 			}
