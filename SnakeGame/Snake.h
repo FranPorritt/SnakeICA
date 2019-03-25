@@ -10,7 +10,7 @@ enum class EDirection
 	eEast,
 	eSouth,
 	eWest,
-	eStop
+	eStop,
 };
 
 class Snake
@@ -20,7 +20,7 @@ protected:
 	sf::Color color;
 	float radius;
 	
-	EDirection direction{ EDirection::eNorth };
+	EDirection direction = EDirection::eNorth;
 
 	bool isDead = false;
 	bool isDrowning = false;
@@ -44,17 +44,18 @@ public:
 	// Checks if snake is alive
 	virtual void Update(int &screenWidth, int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos);
 	// Called when snake is above water
-	void AboveWater(int &screenWidth);
-	void BelowWater();
+	virtual void AboveWater(int &screenWidth);
+	virtual void BelowWater();
 	// Stops snake going more the one above the water level
 	void Floating();
 	// Adds new segment to snake
 	void GrowTail();
+	// Returns if dead
 	bool DeadCheck();
-	// Ends game
-	virtual void Dead(sf::RenderWindow & window, int &score);
 	// Returns screen position
 	sf::Vector2f GetScreenPos();
+	// Returns player score
+	int GetScore();
 
 	//SFML Rendering
 

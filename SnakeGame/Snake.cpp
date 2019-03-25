@@ -82,7 +82,7 @@ void Snake::Move()
 
 void Snake::Update(int &screenWidth, int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos)
 {
-	score = SegmentList.size();
+	score = SegmentList.size() - 1;
 
 	//Checks if snake collides with window edges
 	if (screenPos.x < 0 || screenPos.x > screenWidth - radius * 2)
@@ -135,11 +135,6 @@ void Snake::Update(int &screenWidth, int &screenHeight, sf::RenderWindow & windo
 		isDead = true;
 	}
 
-	if (isDead)
-	{
-		Dead(window, score);
-	}
-
 	movementSteps++;
 	DisplayAir(window);
 	DisplayScore(window);
@@ -181,16 +176,14 @@ bool Snake::DeadCheck()
 	return isDead;
 }
 
-void Snake::Dead(sf::RenderWindow & window, int &score)
-{
-	std::cout << "Game Over" << std::endl;
-	Game game;
-	game.GameOverScreen(window, score);
-}
-
 sf::Vector2f Snake::GetScreenPos()
 {
 	return screenPos;
+}
+
+int Snake::GetScore()
+{
+	return score;
 }
 
 // SFML Rendering

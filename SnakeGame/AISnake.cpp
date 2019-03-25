@@ -44,8 +44,6 @@ void AISnake::Move()
 
 void AISnake::Update(int &screenWidth, int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos)
 {
-	//score = SegmentList.size();
-
 	//Checks if snake collides with window edges
 	if (screenPos.x < 0 || screenPos.x > screenWidth - radius * 2)
 	{
@@ -54,6 +52,43 @@ void AISnake::Update(int &screenWidth, int &screenHeight, sf::RenderWindow & win
 	if (screenPos.y < 0 || screenPos.y > screenHeight - radius * 2)
 	{
 		isDead = true;
+	}
+
+	// Edge checks
+	if (screenPos.x == 0) // West edge
+	{
+		if (direction == EDirection::eWest) //Heading towards edge
+		{
+			if (rand() % edgeChance != 0)
+			{
+				if ((rand() % 2 == 0) && (!isAboveWater))
+				{
+					direction = EDirection::eNorth;
+				}
+				else
+				{
+					direction = EDirection::eSouth;
+				}
+			}
+		}
+	}
+
+	if (screenPos.x == screenWidth - radius * 2) // East edge
+	{
+		if (direction == EDirection::eEast) //Heading towards edge
+		{
+			if (rand() % edgeChance != 0)
+			{
+				if ((rand() % 2 == 0) && (!isAboveWater))
+				{
+					direction = EDirection::eNorth;
+				}
+				else
+				{
+					direction = EDirection::eSouth;
+				}
+			}
+		}
 	}
 
 	// Self Collision Check
@@ -98,13 +133,40 @@ void AISnake::Update(int &screenWidth, int &screenHeight, sf::RenderWindow & win
 		isDead = true;
 	}
 
-	/*if (isDead)
+	if (isDead)
 	{
-		Dead(window, score);
-	}*/
+		Dead(window);
+	}
 
 	movementSteps++;
 	//DisplayAir(window);
+}
+
+void AISnake::AboveWater(int &screenWidth)
+{
+	isAboveWater = true;
+	isDrowning = false;
+
+	// Sets direction of snake once above water
+	if (!isDirectionSet)
+	{
+		if ((screenPos.x >= screenWidth / 2) && (direction != EDirection::eEast))
+		{
+			direction = EDirection::eWest;
+		}
+		else if ((screenPos.x <= screenWidth / 2) && (direction != EDirection::eWest))
+		{
+			direction = EDirection::eEast;
+		}
+	}
+	// Sets direction above water only once so ai is free to move to collectables
+	isDirectionSet = true;
+}
+
+void AISnake::BelowWater()
+{
+	isAboveWater = false;
+	isDirectionSet = false;
 }
 
 void AISnake::CollectableNorth()
@@ -139,7 +201,7 @@ void AISnake::CollectableWest()
 	}
 }
 
-void AISnake::Dead(sf::RenderWindow & window, int &score)
+void AISnake::Dead(sf::RenderWindow & window)
 {
 	SegmentList.clear();
 }

@@ -15,8 +15,9 @@
 
 using namespace std;
 
-int main(sf::Vector2f &waterScreenPos, int &score)
+int main()
 {  
+	sf::Vector2f waterScreenPos;
 	int screenWidth = 1000;
 	int screenHeight = 750;
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "C++ Snake ICA : V8078659");
@@ -25,7 +26,26 @@ int main(sf::Vector2f &waterScreenPos, int &score)
     std::cout << "SnakeGame: Starting" << std::endl;
 
 	Game* snakeGame = new Game();
-	snakeGame->MainMenu(window, screenWidth, screenHeight, waterScreenPos, score);
+	//snakeGame->MainMenu(window, screenWidth, screenHeight, waterScreenPos, score);
+	
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				window.close();
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		snakeGame->Update(window, screenWidth, screenHeight, waterScreenPos);
+	}
 
     std::cout << "SnakeGame: Finished" << std::endl;
 

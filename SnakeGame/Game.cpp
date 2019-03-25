@@ -12,7 +12,36 @@ Game::~Game()
 {
 }
 
-void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos, int &score)
+void Game::Update(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos)
+{
+	switch (currentState)
+	{
+	case gameState::menu:
+		MainMenu(window, screenWidth, screenHeight, waterScreenPos);
+		break;
+
+	case gameState::singlePlayer:
+		Run(window, screenWidth, screenHeight, waterScreenPos);
+		break;
+
+	case gameState::aiPlayer:
+		AIRun(window, screenWidth, screenHeight, waterScreenPos);
+		break;
+
+	case gameState::gameOver:
+		GameOverScreen(window);
+		break;
+
+	case gameState::gameWon:
+		GameWonScreen(window);
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos)
 {
 	sf::Clock clock;
 	sf::Font font;
@@ -24,7 +53,7 @@ void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeigh
 	Water* water = new Water(sf::Color::Blue, { (float)screenWidth, (float)screenHeight});
 	water->MenuPos();
 
-	while (window.isOpen())
+	while (window.isOpen() && currentState == gameState::menu)
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -68,12 +97,12 @@ void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeigh
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			Run(window, screenWidth, screenHeight, waterScreenPos);
+			currentState = gameState::singlePlayer;
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
 		{
-			AIRun(window, screenWidth, screenHeight, waterScreenPos, score);
+			currentState = gameState::aiPlayer;
 		}
 
 		water->MenuLeak();
@@ -83,7 +112,7 @@ void Game::MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeigh
 	}
 }
 
-void Game::GameOverScreen(sf::RenderWindow& window, int &score)
+void Game::GameOverScreen(sf::RenderWindow& window)
 {
 	sf::Font font;
 	if (!font.loadFromFile("ka1.ttf"))
@@ -91,7 +120,7 @@ void Game::GameOverScreen(sf::RenderWindow& window, int &score)
 		std::cout << "ERROR" << std::endl;
 	}
 
-	while (window.isOpen())
+	while ((window.isOpen()) && (currentState == gameState::gameOver))
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -110,7 +139,7 @@ void Game::GameOverScreen(sf::RenderWindow& window, int &score)
 		sf::Text gameOverText;
 		gameOverText.setFont(font);
 		gameOverText.setCharacterSize(75);
-		gameOverText.setPosition(500, 100);
+		gameOverText.setPosition(500, 200);
 		gameOverText.setString("GAME OVER");
 		gameOverText.setFillColor(sf::Color::Red); 
 		
@@ -120,12 +149,67 @@ void Game::GameOverScreen(sf::RenderWindow& window, int &score)
 		scoreText.setFont(font);
 		scoreText.setCharacterSize(50);
 		scoreText.setPosition(500, 500);
-		scoreText.setString("SCORE: " + std::to_string(score));
+		scoreText.setString("SCORE: " + std::to_string(playerSnakeScore));
 		scoreText.setFillColor(sf::Color::Red);
 
 		scoreText.setOrigin(floor(scoreText.getLocalBounds().width / 2), floor(scoreText.getLocalBounds().height / 2));
 
 		window.draw(gameOverText);
+		window.draw(scoreText);
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			currentState = gameState::menu;
+		}
+
+		window.display();
+		window.clear();
+	}
+}
+
+void Game::GameWonScreen(sf::RenderWindow& window)
+{
+	sf::Font font;
+	if (!font.loadFromFile("ka1.ttf"))
+	{
+		std::cout << "ERROR" << std::endl;
+	}
+
+	while ((window.isOpen()) && (currentState == gameState::gameWon))
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				window.close();
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		sf::Text gameWonText;
+		gameWonText.setFont(font);
+		gameWonText.setCharacterSize(75);
+		gameWonText.setPosition(500, 200);
+		gameWonText.setString("GAME WON");
+		gameWonText.setFillColor(sf::Color::Red);
+
+		gameWonText.setOrigin(floor(gameWonText.getLocalBounds().width / 2), floor(gameWonText.getLocalBounds().height / 2));
+
+		sf::Text scoreText;
+		scoreText.setFont(font);
+		scoreText.setCharacterSize(50);
+		scoreText.setPosition(500, 500);
+		scoreText.setString("SCORE: " + std::to_string(playerSnakeScore));
+		scoreText.setFillColor(sf::Color::Red);
+
+		scoreText.setOrigin(floor(scoreText.getLocalBounds().width / 2), floor(scoreText.getLocalBounds().height / 2));
+
+		window.draw(gameWonText);
 		window.draw(scoreText);
 
 		window.display();
@@ -158,7 +242,7 @@ void Game::Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf
 		activeCollectables++;
 	}
 
-	while (window.isOpen())
+	while ((window.isOpen()) && (currentState == gameState::singlePlayer))
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -174,7 +258,7 @@ void Game::Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf
 			}
 		}			   
 
-		while (clock.getElapsedTime().asMilliseconds() < 200);
+		while (clock.getElapsedTime().asMilliseconds() < 175);
 		clock.restart();
 
 		water->Render(window);
@@ -224,6 +308,12 @@ void Game::Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf
 		}
 		waterLeak++;
 
+		if (playerSnake->DeadCheck())
+		{
+			playerSnakeScore = playerSnake->GetScore();
+			currentState = gameState::gameOver;
+		}
+
 		window.display();
 		window.clear();
 	}
@@ -236,10 +326,10 @@ void Game::Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf
 	}
 }
 
-void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos, int &score)
+void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos)
 {
 	sf::Clock clock;
-	srand(time(0));
+	//srand(time(0));
 
 	Water* water = new Water(sf::Color::Blue, { (float)screenWidth, (float)screenHeight - 20.0f });
 	Snake* playerSnake = new Snake({ 500,500 }, sf::Color::Green, 10.0f);
@@ -262,7 +352,7 @@ void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, 
 		activeCollectables++;
 	}
 
-	while (window.isOpen())
+	while (window.isOpen() && currentState == gameState::aiPlayer)
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -278,7 +368,7 @@ void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, 
 			}
 		}
 
-		while (clock.getElapsedTime().asMilliseconds() < 200);
+		while (clock.getElapsedTime().asMilliseconds() < 175);
 		clock.restart();
 
 		water->Render(window);
@@ -442,9 +532,22 @@ void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, 
 		}
 		waterLeak++;
 
+		if (playerSnake->DeadCheck())
+		{
+			playerSnakeScore = playerSnake->GetScore();
+			currentState = gameState::gameOver;
+		}
+
 		if (playerSnake->GetScreenPos() == aiSnake->GetScreenPos())
 		{
-			playerSnake->Dead(window, score);
+			playerSnakeScore = playerSnake->GetScore();
+			currentState = gameState::gameOver;
+		}
+		
+		if (aiSnake->DeadCheck())
+		{
+			playerSnakeScore = playerSnake->GetScore();
+			currentState = gameState::gameWon;
 		}
 
 		window.display();

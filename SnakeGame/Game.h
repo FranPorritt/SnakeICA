@@ -3,6 +3,15 @@
 #include "Collectable.h"
 #include <vector>
 
+enum class gameState
+{
+	menu,
+	singlePlayer,
+	aiPlayer,
+	gameOver,
+	gameWon,
+};
+
 class Game
 {
 protected:
@@ -12,6 +21,7 @@ protected:
 
 	int waterLeak = 0;
 
+	gameState currentState = gameState::menu;
 
 	// Consider moving this to AISnake.h
 	std::vector<int> AICollectableDistance;
@@ -29,14 +39,18 @@ protected:
 	int xTargetDistance = 0;
 	int yTargetDistance = 0;
 
+	int playerSnakeScore = 0;
+
 public:
 	Game();
 	~Game();
 
-	void MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos, int &score);
-	void GameOverScreen(sf::RenderWindow& window, int &score);
+	void Update(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos);
+	void MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos);
+	void GameOverScreen(sf::RenderWindow& window);
+	void GameWonScreen(sf::RenderWindow& window);
 	// Runs game
 	void Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos);
-	void AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos, int &score);
+	void AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos);
 };
 

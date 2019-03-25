@@ -20,7 +20,7 @@ bool Collectable::Alive()
 
 void Collectable::AliveCheck()
 {
-	srand(time(0));
+	//srand(time(0));
 
 	if (rand() % aliveCheckTime == 0)
 	{
