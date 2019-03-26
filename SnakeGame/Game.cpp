@@ -329,7 +329,7 @@ void Game::Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf
 void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos)
 {
 	sf::Clock clock;
-	//srand(time(0));
+	srand(time(0));
 
 	Water* water = new Water(sf::Color::Blue, { (float)screenWidth, (float)screenHeight - 20.0f });
 	Snake* playerSnake = new Snake({ 500,500 }, sf::Color::Green, 10.0f);
@@ -429,8 +429,6 @@ void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, 
 		{
 			if (AICollectableDistance[distanceIndex] < closestValue)
 			{
-				thirdClosestValue = secondClosestValue;
-				thirdClosestValuePos = secondClosestValuePos;
 				secondClosestValue = closestValue;
 				secondClosestValuePos = closestValuePos;
 				closestValue = AICollectableDistance[distanceIndex];
@@ -438,19 +436,19 @@ void Game::AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, 
 			}
 		}
 
-		if (collectableItems[closestValuePos]->Alive())
+		if (collectableItems[closestValuePos]->Alive()) // Checks if collectable is active
 		{
 			AITargetCollectable = collectableItems[closestValuePos]->GetScreenPos();
 		}
 		else
 		{
-			if (collectableItems[secondClosestValuePos]->Alive())
+			if (collectableItems[secondClosestValuePos]->Alive()) // Checks if collectable is active
 			{
 				AITargetCollectable = collectableItems[secondClosestValuePos]->GetScreenPos();
 			}
 			else
 			{
-				AITargetCollectable = collectableItems[thirdClosestValuePos]->GetScreenPos();
+				AITargetCollectable = aiSnake->SetRandomDestination();				
 			}
 		}
 		xTargetDistance = aiSnake->GetScreenPos().x - AITargetCollectable.x;

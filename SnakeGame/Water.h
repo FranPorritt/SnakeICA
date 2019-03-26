@@ -16,9 +16,11 @@ public:
 	void Render(sf::RenderWindow& window);
 	// Reduces water
 	void Leak();
+
 	// Menu functions
 	void MenuLeak();
 	void MenuPos();
+
 	// Returns waterScreenPos
 	sf::Vector2f GetScreenPos();
 };

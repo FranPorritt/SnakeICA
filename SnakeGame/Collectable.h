@@ -17,18 +17,20 @@ public:
 	Collectable(sf::Vector2f screenPosArg, sf::Color colorArg, float radiusArg);
 	~Collectable();
 
+	// Returns if active
 	bool Alive();
-	// Checks if collectable is active
+	// Randomly sets collectable active
 	void AliveCheck();
+
 	// Makes collectable inactive and calls NewScreenPos
 	void PickedUp(Water& water, int &screenHeight);
 	// Draws the collectable
 	void Render(sf::RenderWindow& window, int &screenWidth, int &screenHeight);
 	// Gets new random screen position
 	sf::Vector2f NewScreenPos(sf::Vector2f &screenPos, Water& water, int &screenHeight);
-	// Returns screen position
-	sf::Vector2f GetScreenPos();
 	// Makes sure collectables aren't out of playing field
 	void Floating();
+	// Returns screen position
+	sf::Vector2f GetScreenPos();
 };
 

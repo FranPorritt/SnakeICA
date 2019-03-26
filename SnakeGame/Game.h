@@ -46,11 +46,12 @@ public:
 	~Game();
 
 	void Update(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos);
-	void MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos);
-	void GameOverScreen(sf::RenderWindow& window);
-	void GameWonScreen(sf::RenderWindow& window);
+	void MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::menu
+	void GameOverScreen(sf::RenderWindow& window); // gameState::gameOver
+	void GameWonScreen(sf::RenderWindow& window); // gameState::gameWon
+
 	// Runs game
-	void Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos);
-	void AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos);
+	void Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::singlePlayer
+	void AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::aiPlayer
 };
 

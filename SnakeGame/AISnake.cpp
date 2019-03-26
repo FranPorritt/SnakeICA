@@ -201,6 +201,16 @@ void AISnake::CollectableWest()
 	}
 }
 
+sf::Vector2f AISnake::SetRandomDestination()
+{
+	float x = rand() % 1000;
+	float y = rand() % 750;
+
+	sf::Vector2f randomDestination = { x,y };
+
+	return randomDestination;
+}
+
 void AISnake::Dead(sf::RenderWindow & window)
 {
 	SegmentList.clear();

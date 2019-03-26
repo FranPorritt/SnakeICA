@@ -14,12 +14,19 @@ public:
 
 	void Move() override;
 	void Update(int &screenWidth, int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos) override;
+
+	// Sets direction based on x position
 	void AboveWater(int &screenWidth) override;
 	void BelowWater() override;
+
+	// Sets direction
 	void CollectableNorth();
 	void CollectableSouth();
 	void CollectableEast();
 	void CollectableWest();
+	sf::Vector2f SetRandomDestination();
+
+	// Clears segment list
 	void Dead(sf::RenderWindow & window);
 };
 

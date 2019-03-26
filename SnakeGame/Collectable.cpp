@@ -20,8 +20,6 @@ bool Collectable::Alive()
 
 void Collectable::AliveCheck()
 {
-	//srand(time(0));
-
 	if (rand() % aliveCheckTime == 0)
 	{
 		aliveFlag = true;
@@ -68,12 +66,12 @@ sf::Vector2f Collectable::NewScreenPos(sf::Vector2f &screenPos, Water& water, in
 	return screenPos;
 }
 
-sf::Vector2f Collectable::GetScreenPos()
-{
-	return screenPos;
-}
-
 void Collectable::Floating()
 {
 	screenPos.y += radius * 2;
+}
+
+sf::Vector2f Collectable::GetScreenPos()
+{
+	return screenPos;
 }

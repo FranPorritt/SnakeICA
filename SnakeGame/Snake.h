@@ -26,6 +26,7 @@ protected:
 	bool isDrowning = false;
 	bool isAboveWater = false;
 
+	// Air variables
 	int movementSteps = 0;
 	int breathSteps = 100;
 	int drowningSteps = 10;
