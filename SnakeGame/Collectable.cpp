@@ -26,14 +26,14 @@ void Collectable::AliveCheck()
 	}
 }
 
-void Collectable::PickedUp(Water& water, int &screenHeight)
+void Collectable::PickedUp(Water& water, const int &screenHeight)
 {
 	aliveFlag = false;
 	isPickedUp = true;
 	NewScreenPos(screenPos, water, screenHeight);
 }
 
-void Collectable::Render(sf::RenderWindow& window, int &screenWidth, int &screenHeight)
+void Collectable::Render(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight)
 {
 	if (rand() % aliveCheckTime == 0)
 	{
@@ -49,7 +49,7 @@ void Collectable::Render(sf::RenderWindow& window, int &screenWidth, int &screen
 	}
 }
 
-sf::Vector2f Collectable::NewScreenPos(sf::Vector2f &screenPos, Water& water, int &screenHeight)
+sf::Vector2f Collectable::NewScreenPos(sf::Vector2f &screenPos, Water& water, const int &screenHeight)
 {
 	float x = (rand() % 50 + 1) * 20; // FIX MAGIC NUMBERS
 	float y = (rand() % 36 + 1) * 20;

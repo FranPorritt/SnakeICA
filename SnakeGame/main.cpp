@@ -18,15 +18,14 @@ using namespace std;
 int main()
 {  
 	sf::Vector2f waterScreenPos;
-	int screenWidth = 1000;
-	int screenHeight = 750;
+	const int screenWidth = 1000;
+	const int screenHeight = 760;
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "C++ Snake ICA : V8078659");
 
     // We can still output to the console window
     std::cout << "SnakeGame: Starting" << std::endl;
 
 	Game* snakeGame = new Game();
-	//snakeGame->MainMenu(window, screenWidth, screenHeight, waterScreenPos, score);
 	
 	while (window.isOpen())
 	{
@@ -45,9 +44,18 @@ int main()
 		}
 
 		snakeGame->Update(window, screenWidth, screenHeight, waterScreenPos);
+
+		if (snakeGame->GetRestart())
+		{		
+			delete snakeGame;
+
+			Game* snakeGame = new Game();
+		}
 	}
 
     std::cout << "SnakeGame: Finished" << std::endl;
+
+	delete snakeGame;
 
     return 0;
 }

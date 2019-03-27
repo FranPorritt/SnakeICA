@@ -42,7 +42,7 @@ void AISnake::Move()
 	SegmentList.pop_back();
 }
 
-void AISnake::Update(int &screenWidth, int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos)
+void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos)
 {
 	//Checks if snake collides with window edges
 	if (screenPos.x < 0 || screenPos.x > screenWidth - radius * 2)
@@ -142,7 +142,7 @@ void AISnake::Update(int &screenWidth, int &screenHeight, sf::RenderWindow & win
 	//DisplayAir(window);
 }
 
-void AISnake::AboveWater(int &screenWidth)
+void AISnake::AboveWater(const int &screenWidth)
 {
 	isAboveWater = true;
 	isDrowning = false;

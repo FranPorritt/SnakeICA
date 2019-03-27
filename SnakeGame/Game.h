@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Collectable.h"
+#include "AISnake.h"
 #include <vector>
 
 enum class gameState
@@ -10,11 +11,14 @@ enum class gameState
 	aiPlayer,
 	gameOver,
 	gameWon,
+	restart,
 };
 
 class Game
 {
 protected:
+	bool isRestarting = false;
+
 	std::vector<Collectable*>collectableItems;
 	int activeCollectables = 0;
 	int maxActiveCollectables = 5;
@@ -23,7 +27,10 @@ protected:
 
 	gameState currentState = gameState::menu;
 
-	// Consider moving this to AISnake.h
+	std::vector<AISnake*>aiSnakes;
+	int aiPlayers = 2;
+
+	// Consider moving this to AISnake.h UPDATE: HAS TO MOVE BECAUSE AI SNAKES NOW IN VECTOR, EACH SNAKE NEEDS INDIVIDUAL VALUES
 	std::vector<int> AICollectableDistance;
 	int xDistance = 0;
 	int yDistance = 0;
@@ -32,8 +39,6 @@ protected:
 	int closestValuePos = 0;
 	int secondClosestValue = 0;
 	int secondClosestValuePos = 0;
-	int thirdClosestValue = 0;
-	int thirdClosestValuePos = 0;
 
 	sf::Vector2f AITargetCollectable;
 	int xTargetDistance = 0;
@@ -45,13 +50,18 @@ public:
 	Game();
 	~Game();
 
-	void Update(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos);
-	void MainMenu(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::menu
+	void Update(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos);
+	void MainMenu(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::menu
 	void GameOverScreen(sf::RenderWindow& window); // gameState::gameOver
 	void GameWonScreen(sf::RenderWindow& window); // gameState::gameWon
+	void Restart(sf::RenderWindow& window);
 
 	// Runs game
-	void Run(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::singlePlayer
-	void AIRun(sf::RenderWindow& window, int &screenWidth, int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::aiPlayer
+	void Run(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::singlePlayer
+	void AIRun(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::aiPlayer
+
+	// Returns state
+	gameState GetState();
+	bool GetRestart();
 };
 

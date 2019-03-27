@@ -43,9 +43,9 @@ public:
 	// Controls movement
 	virtual void Move();
 	// Checks if snake is alive
-	virtual void Update(int &screenWidth, int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos);
+	virtual void Update(const int &screenWidth, const int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos);
 	// Called when snake is above water
-	virtual void AboveWater(int &screenWidth);
+	virtual void AboveWater(const int &screenWidth);
 	virtual void BelowWater();
 	// Stops snake going more the one above the water level
 	void Floating();

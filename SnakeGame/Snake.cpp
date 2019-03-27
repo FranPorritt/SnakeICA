@@ -80,7 +80,7 @@ void Snake::Move()
 }
 
 
-void Snake::Update(int &screenWidth, int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos)
+void Snake::Update(const int &screenWidth, const int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos)
 {
 	score = SegmentList.size() - 1;
 
@@ -140,7 +140,7 @@ void Snake::Update(int &screenWidth, int &screenHeight, sf::RenderWindow & windo
 	DisplayScore(window);
 }
 
-void Snake::AboveWater(int &screenWidth)
+void Snake::AboveWater(const int &screenWidth)
 {
 	isAboveWater = true;
 	isDrowning = false;

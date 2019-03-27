@@ -23,11 +23,11 @@ public:
 	void AliveCheck();
 
 	// Makes collectable inactive and calls NewScreenPos
-	void PickedUp(Water& water, int &screenHeight);
+	void PickedUp(Water& water, const int &screenHeight);
 	// Draws the collectable
-	void Render(sf::RenderWindow& window, int &screenWidth, int &screenHeight);
+	void Render(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight);
 	// Gets new random screen position
-	sf::Vector2f NewScreenPos(sf::Vector2f &screenPos, Water& water, int &screenHeight);
+	sf::Vector2f NewScreenPos(sf::Vector2f &screenPos, Water& water, const int &screenHeight);
 	// Makes sure collectables aren't out of playing field
 	void Floating();
 	// Returns screen position
