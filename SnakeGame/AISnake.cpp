@@ -42,8 +42,84 @@ void AISnake::Move()
 	SegmentList.pop_back();
 }
 
+void AISnake::CollectableDistance(int& distance)
+{
+	AICollectableDistance.push_back(distance);
+}
+
+void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
+{
+	closestValue = 10000;
+	for (int distanceIndex = 0; distanceIndex < AICollectableDistance.size(); distanceIndex++)
+	{
+		if (AICollectableDistance[distanceIndex] < closestValue)
+		{
+			secondClosestValue = closestValue;
+			secondClosestValuePos = closestValuePos;
+			closestValue = AICollectableDistance[distanceIndex];
+			closestValuePos = distanceIndex;
+		}
+	}
+
+	if (collectableItems[closestValuePos]->Alive()) // Checks if collectable is active
+	{
+		AITargetCollectable = collectableItems[closestValuePos]->GetScreenPos();
+	}
+	else
+	{
+		if (collectableItems[secondClosestValuePos]->Alive()) // Checks if collectable is active
+		{
+			AITargetCollectable = collectableItems[secondClosestValuePos]->GetScreenPos();
+		}
+		else
+		{
+			AITargetCollectable = SetRandomDestination();
+		}
+	}
+	xTargetDistance = GetScreenPos().x - AITargetCollectable.x;
+	if (xTargetDistance < 0)
+	{
+		xTargetDistance = -xTargetDistance;
+	}
+	yTargetDistance = GetScreenPos().y - AITargetCollectable.y;
+	if (yTargetDistance < 0)
+	{
+		yTargetDistance = -yTargetDistance;
+	}
+
+	// Set direction to collectable
+	if (xTargetDistance > yTargetDistance)
+	{
+		if (AITargetCollectable.x > GetScreenPos().x)
+		{
+			std::cout << "Moving east" << std::endl;
+			CollectableEast();
+		}
+		else
+		{
+			std::cout << "Moving west" << std::endl;
+			CollectableWest();
+		}
+	}
+	else
+	{
+		if (AITargetCollectable.y > GetScreenPos().y)
+		{
+			std::cout << "Moving south" << std::endl;
+			CollectableSouth();
+		}
+		else
+		{
+			std::cout << "Moving north" << std::endl;
+			CollectableNorth();
+		}
+	}
+}
+
 void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos)
 {
+	AICollectableDistance.clear();
+
 	//Checks if snake collides with window edges
 	if (screenPos.x < 0 || screenPos.x > screenWidth - radius * 2)
 	{
@@ -112,6 +188,11 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 		movementSteps = 0;
 	}
 
+	if ((!isAboveWater) && (movementSteps >= breathSteps - 20)) // Checks if snake is drowning
+	{
+		GoForAir();
+	}
+
 	if ((!isAboveWater) && (movementSteps >= breathSteps)) // Checks if snake is drowning
 	{
 		isDrowning = true;
@@ -119,7 +200,7 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 
 	if (isDrowning) // Removes a tail segment until surface is reached
 	{
-		direction = EDirection::eNorth;
+		GoForAir();
 
 		if (movementSteps >= drowningSteps)
 		{
@@ -167,6 +248,11 @@ void AISnake::BelowWater()
 {
 	isAboveWater = false;
 	isDirectionSet = false;
+}
+
+void AISnake::GoForAir()
+{
+	direction = EDirection::eNorth;
 }
 
 void AISnake::CollectableNorth()

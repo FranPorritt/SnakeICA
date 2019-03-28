@@ -20,7 +20,6 @@ protected:
 	bool isRestarting = false;
 
 	std::vector<Collectable*>collectableItems;
-	int activeCollectables = 0;
 	int maxActiveCollectables = 5;
 
 	int waterLeak = 0;
@@ -29,20 +28,13 @@ protected:
 
 	std::vector<AISnake*>aiSnakes;
 	int aiPlayers = 2;
+	int activeAI = aiSnakes.size();
+	bool allAIDead = false;
 
-	// Consider moving this to AISnake.h UPDATE: HAS TO MOVE BECAUSE AI SNAKES NOW IN VECTOR, EACH SNAKE NEEDS INDIVIDUAL VALUES
-	std::vector<int> AICollectableDistance;
+	// AI Snake Pathfinding values
 	int xDistance = 0;
 	int yDistance = 0;
 	int distance = 0;
-	int closestValue = 0;
-	int closestValuePos = 0;
-	int secondClosestValue = 0;
-	int secondClosestValuePos = 0;
-
-	sf::Vector2f AITargetCollectable;
-	int xTargetDistance = 0;
-	int yTargetDistance = 0;
 
 	int playerSnakeScore = 0;
 

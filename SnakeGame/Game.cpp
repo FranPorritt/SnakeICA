@@ -56,7 +56,7 @@ void Game::MainMenu(sf::RenderWindow& window, const int &screenWidth, const int 
 		std::cout << "ERROR" << std::endl;
 	}
 
-	Water* water = new Water(sf::Color::Blue, { (float)screenWidth, (float)screenHeight});
+	Water* water = new Water(sf::Color::Blue, { (float)screenWidth, (float)screenHeight });
 	water->MenuPos();
 
 	while (window.isOpen() && currentState == gameState::menu)
@@ -83,7 +83,7 @@ void Game::MainMenu(sf::RenderWindow& window, const int &screenWidth, const int 
 		sf::Text titleText;
 		titleText.setFont(font);
 		titleText.setCharacterSize(50);
-		titleText.setPosition(screenWidth/2, screenHeight/3);
+		titleText.setPosition(screenWidth / 2, screenHeight / 3);
 		titleText.setString("SNAKE");
 		titleText.setFillColor(sf::Color::Green);
 
@@ -92,7 +92,7 @@ void Game::MainMenu(sf::RenderWindow& window, const int &screenWidth, const int 
 		sf::Text menuText;
 		menuText.setFont(font);
 		menuText.setCharacterSize(30);
-		menuText.setPosition(screenWidth/2, screenHeight/2);
+		menuText.setPosition(screenWidth / 2, screenHeight / 2);
 		menuText.setString("PRESS SPACE TO PLAY");
 		menuText.setFillColor(sf::Color::Red);
 
@@ -147,8 +147,8 @@ void Game::GameOverScreen(sf::RenderWindow& window)
 		gameOverText.setCharacterSize(75);
 		gameOverText.setPosition(500, 200);
 		gameOverText.setString("GAME OVER");
-		gameOverText.setFillColor(sf::Color::Red); 
-		
+		gameOverText.setFillColor(sf::Color::Red);
+
 		gameOverText.setOrigin(floor(gameOverText.getLocalBounds().width / 2), floor(gameOverText.getLocalBounds().height / 2));
 
 		sf::Text scoreText;
@@ -237,9 +237,9 @@ void Game::Run(sf::RenderWindow& window, const int &screenWidth, const int &scre
 {
 	sf::Clock clock;
 	srand(time(0));
-	
+
 	Water* water = new Water(sf::Color::Blue, { (float)screenWidth, (float)screenHeight - 20.0f });
-	Snake* playerSnake = new Snake({500,500}, sf::Color::Green, 10.0f);
+	Snake* playerSnake = new Snake({ 500,500 }, sf::Color::Green, 10.0f);
 
 	// Creates collectables
 	for (int collectableIndex = 0; collectableIndex < maxActiveCollectables; collectableIndex++)
@@ -255,7 +255,6 @@ void Game::Run(sf::RenderWindow& window, const int &screenWidth, const int &scre
 		}
 
 		collectableItems.push_back(new Collectable({ x,y }, sf::Color::Red, 10.0f));
-		activeCollectables++;
 	}
 
 	while ((window.isOpen()) && (currentState == gameState::singlePlayer))
@@ -272,7 +271,7 @@ void Game::Run(sf::RenderWindow& window, const int &screenWidth, const int &scre
 			default:
 				break;
 			}
-		}			   
+		}
 
 		while (clock.getElapsedTime().asMilliseconds() < 175);
 		clock.restart();
@@ -280,7 +279,7 @@ void Game::Run(sf::RenderWindow& window, const int &screenWidth, const int &scre
 		water->Render(window);
 
 		playerSnake->Move();
-	    playerSnake->Update(screenWidth, screenHeight, window, waterScreenPos);
+		playerSnake->Update(screenWidth, screenHeight, window, waterScreenPos);
 		playerSnake->Render(window);
 
 		for (Collectable *c : collectableItems)
@@ -349,7 +348,6 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 
 	Water* water = new Water(sf::Color::Blue, { (float)screenWidth, (float)screenHeight - 20.0f });
 	Snake* playerSnake = new Snake({ 500,500 }, sf::Color::Green, 10.0f);
-	//AISnake* aiSnake = new AISnake({ 200,500 }, sf::Color::Yellow, 10.0f);
 
 	sf::Color color[2] = { sf::Color::Yellow, sf::Color::Magenta };
 
@@ -364,7 +362,7 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 		if (y < water->GetScreenPos().y || y >= screenHeight)
 		{
 			float y = (rand() % 36 + 1) * 20;
-		} 
+		}
 
 		aiSnakes.push_back(new AISnake({ x,y }, color[aiSnakesIndex], 10.0f));
 	}
@@ -383,7 +381,6 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 		}
 
 		collectableItems.push_back(new Collectable({ x,y }, sf::Color::Red, 10.0f));
-		activeCollectables++;
 	}
 
 	while (window.isOpen() && currentState == gameState::aiPlayer)
@@ -416,13 +413,18 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 			s->Move();
 			s->Update(screenWidth, screenHeight, window, waterScreenPos);
 			s->Render(window);
+			s->Pathfinding(collectableItems); // Determines which collectable is closest
 		}
-
-		AICollectableDistance.clear();
 
 		for (Collectable *c : collectableItems)
 		{
 			c->Render(window, screenWidth, screenHeight);
+
+			// Keeps collectables in playing field
+			if (c->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
+			{
+				c->Floating();
+			}
 
 			// Checks for collisions with player
 			if (c->GetScreenPos() == playerSnake->GetScreenPos())
@@ -431,27 +433,18 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 				playerSnake->GrowTail();
 			}
 
-			// Checks for collisions with ai
+			// AI COLLECTABLE CHECKS
 			for (AISnake *s : aiSnakes)
 			{
+				// Checks for collisions with ai
 				if (c->GetScreenPos() == s->GetScreenPos())
 				{
 					c->PickedUp(*water, screenHeight);
 					s->GrowTail();
 					std::cout << "PICKED UP" << std::endl;
 				}
-			}
 
-			// Keeps collectables in playing field
-			if (c->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
-			{
-				c->Floating();
-			}
-
-			// AI COLLECTABLE CHECKS
-			// Gets distance between AI and collectable
-			for (AISnake *s : aiSnakes)
-			{
+				// Gets distance between AI and collectable			
 				xDistance = s->GetScreenPos().x - c->GetScreenPos().x;
 				if (xDistance < 0)
 				{
@@ -463,77 +456,7 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 					yDistance = -yDistance;
 				}
 				distance = xDistance * 2 + yDistance * 2;
-				AICollectableDistance.push_back(distance);
-			}
-		}
-
-		// Determines which collectable is closest
-		for (AISnake *s : aiSnakes)
-		{
-			closestValue = AICollectableDistance[0];
-			for (int distanceIndex = 0; distanceIndex < AICollectableDistance.size(); distanceIndex++)
-			{
-				if (AICollectableDistance[distanceIndex] < closestValue)
-				{
-					secondClosestValue = closestValue;
-					secondClosestValuePos = closestValuePos;
-					closestValue = AICollectableDistance[distanceIndex];
-					closestValuePos = distanceIndex;
-				}
-			}
-
-			if (collectableItems[closestValuePos]->Alive()) // Checks if collectable is active
-			{
-				AITargetCollectable = collectableItems[closestValuePos]->GetScreenPos();
-			}
-			else
-			{
-				if (collectableItems[secondClosestValuePos]->Alive()) // Checks if collectable is active
-				{
-					AITargetCollectable = collectableItems[secondClosestValuePos]->GetScreenPos();
-				}
-				else
-				{
-					AITargetCollectable = s->SetRandomDestination();
-				}
-			}
-			xTargetDistance = s->GetScreenPos().x - AITargetCollectable.x;
-			if (xTargetDistance < 0)
-			{
-				xTargetDistance = -xTargetDistance;
-			}
-			yDistance = s->GetScreenPos().y - AITargetCollectable.y;
-			if (yTargetDistance < 0)
-			{
-				yTargetDistance = -yTargetDistance;
-			}
-
-			// Set direction to collectable
-			if (xTargetDistance > yTargetDistance)
-			{
-				if (AITargetCollectable.x > s->GetScreenPos().x)
-				{
-					std::cout << "Moving east" << std::endl;
-					s->CollectableEast();
-				}
-				else
-				{
-					std::cout << "Moving west" << std::endl;
-					s->CollectableWest();
-				}
-			}
-			else
-			{
-				if (AITargetCollectable.y > s->GetScreenPos().y)
-				{
-					std::cout << "Moving south" << std::endl;
-					s->CollectableSouth();
-				}
-				else
-				{
-					std::cout << "Moving north" << std::endl;
-					s->CollectableNorth();
-				}
+				s->CollectableDistance(distance);
 			}
 		}
 
@@ -586,6 +509,11 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 			currentState = gameState::gameOver;
 		}
 
+		window.display();
+		window.clear();
+
+		// End game checks
+		allAIDead = true;
 		for (AISnake *s : aiSnakes)
 		{
 			if (playerSnake->GetScreenPos() == s->GetScreenPos())
@@ -594,15 +522,17 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 				currentState = gameState::gameOver;
 			}
 
-			if (s->DeadCheck())
+			if (!s->DeadCheck())
 			{
-				playerSnakeScore = playerSnake->GetScore();
-				currentState = gameState::gameWon;
+				allAIDead = false;
 			}
 		}
 
-		window.display();
-		window.clear();
+		if (allAIDead)
+		{
+			playerSnakeScore = playerSnake->GetScore();
+			currentState = gameState::gameWon;
+		}
 	}
 
 	delete playerSnake;
