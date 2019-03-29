@@ -8,13 +8,15 @@ protected:
 	sf::Vector2f screenPos;
 	sf::Color color;
 	float radius;
+
 	int aliveCheckTime = 4;
 	bool aliveFlag = false;
 	bool isPickedUp = false;
+	bool isBonus = false;
 
 public:
 	Collectable() {}
-	Collectable(sf::Vector2f screenPosArg, sf::Color colorArg, float radiusArg);
+	Collectable(sf::Vector2f screenPosArg, float radiusArg);
 	~Collectable();
 
 	// Returns if active
@@ -32,5 +34,7 @@ public:
 	void Floating();
 	// Returns screen position
 	sf::Vector2f GetScreenPos();
+	// Returns isBonus
+	bool GetBonus();
 };
 

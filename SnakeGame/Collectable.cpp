@@ -4,9 +4,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Collectable::Collectable(sf::Vector2f screenPosArg, sf::Color colorArg, float radiusArg) :
-	screenPos(screenPosArg), color(sf::Color::Red), radius(10.0f)
+Collectable::Collectable(sf::Vector2f screenPosArg, float radiusArg) :
+	screenPos(screenPosArg), radius(10.0f)
 {
+	if (rand() % 3 == 0)
+	{
+		color = sf::Color::White;
+		isBonus = true;
+	}
+	else
+	{
+		color = sf::Color::Red;
+		isBonus = false;
+	}
 }
 
 Collectable::~Collectable()
@@ -51,13 +61,13 @@ void Collectable::Render(sf::RenderWindow& window, const int &screenWidth, const
 
 sf::Vector2f Collectable::NewScreenPos(sf::Vector2f &screenPos, Water& water, const int &screenHeight)
 {
-	float x = (rand() % 50 + 1) * 20; // FIX MAGIC NUMBERS
-	float y = (rand() % 36 + 1) * 20;
+	float x = (rand() % 50) * 20; // FIX MAGIC NUMBERS
+	float y = (rand() % 36) * 20;
 
 	// Checks collectable doesn't spawn above water
 	do
 	{
-		y = (rand() % 36 + 1) * 20;
+		y = (rand() % 36) * 20;
 	} while (y < water.GetScreenPos().y);
 
 	screenPos = { x,y };
@@ -74,4 +84,9 @@ void Collectable::Floating()
 sf::Vector2f Collectable::GetScreenPos()
 {
 	return screenPos;
+}
+
+bool Collectable::GetBonus()
+{
+	return isBonus;
 }

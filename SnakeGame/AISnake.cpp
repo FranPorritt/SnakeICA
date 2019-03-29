@@ -49,32 +49,47 @@ void AISnake::CollectableDistance(int& distance)
 
 void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 {
-	closestValue = 10000;
+	closestValue = 76000;
 	for (int distanceIndex = 0; distanceIndex < AICollectableDistance.size(); distanceIndex++)
 	{
 		if (AICollectableDistance[distanceIndex] < closestValue)
 		{
+			fifthClosestValue = fourthClosestValue;
+			fifthClosestValuePos = fourthClosestValuePos;
+			fourthClosestValue = thirdClosestValue;
+			fourthClosestValuePos = thirdClosestValuePos;
+			thirdClosestValue = secondClosestValue;
+			thirdClosestValuePos = secondClosestValuePos;
 			secondClosestValue = closestValue;
 			secondClosestValuePos = closestValuePos;
 			closestValue = AICollectableDistance[distanceIndex];
 			closestValuePos = distanceIndex;
 		}
 	}
-
-	if (collectableItems[closestValuePos]->Alive()) // Checks if collectable is active
+	
+	if ((rand() % 5 == 0) && (collectableItems[closestValuePos]->Alive()))
 	{
 		AITargetCollectable = collectableItems[closestValuePos]->GetScreenPos();
 	}
+	else if ((rand() % 5 == 1) && (collectableItems[secondClosestValuePos]->Alive()))
+	{
+		AITargetCollectable = collectableItems[secondClosestValuePos]->GetScreenPos();
+	}
+	else if ((rand() % 5 == 2) && (collectableItems[thirdClosestValuePos]->Alive()))
+	{
+		AITargetCollectable = collectableItems[thirdClosestValuePos]->GetScreenPos();
+	}
+	else if ((rand() % 5 == 3) && (collectableItems[fourthClosestValuePos]->Alive()))
+	{
+		AITargetCollectable = collectableItems[fourthClosestValuePos]->GetScreenPos();
+	}
+	else if (collectableItems[fifthClosestValuePos]->Alive())
+	{
+		AITargetCollectable = collectableItems[fifthClosestValuePos]->GetScreenPos();
+	}
 	else
 	{
-		if (collectableItems[secondClosestValuePos]->Alive()) // Checks if collectable is active
-		{
-			AITargetCollectable = collectableItems[secondClosestValuePos]->GetScreenPos();
-		}
-		else
-		{
-			AITargetCollectable = SetRandomDestination();
-		}
+		AITargetCollectable = SetRandomDestination();
 	}
 	xTargetDistance = GetScreenPos().x - AITargetCollectable.x;
 	if (xTargetDistance < 0)
@@ -205,7 +220,7 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 		if (movementSteps >= drowningSteps)
 		{
 			SegmentList.pop_back();
-			movementSteps = 0;
+			movementSteps = 0; // ISSUE ONCE SNAKE IS DEAD I THINK, STILL TRACKING BREATH AND TRYING TO DELETE SEGMENTS
 		}
 	}
 
@@ -216,7 +231,7 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 
 	if (isDead)
 	{
-		Dead(window);
+		Dead();
 	}
 
 	movementSteps++;
@@ -297,7 +312,7 @@ sf::Vector2f AISnake::SetRandomDestination()
 	return randomDestination;
 }
 
-void AISnake::Dead(sf::RenderWindow & window)
+void AISnake::Dead()
 {
 	SegmentList.clear();
 }

@@ -171,6 +171,14 @@ void Snake::GrowTail()
 	SegmentList.push_front(screenPos);
 }
 
+void Snake::GrowBonusTail()
+{
+	for (int bonusLoop = 0; bonusLoop < BonusLength; bonusLoop++)
+	{
+		SegmentList.push_front(screenPos);
+	}
+}
+
 bool Snake::DeadCheck()
 {
 	return isDead;
@@ -179,6 +187,12 @@ bool Snake::DeadCheck()
 sf::Vector2f Snake::GetScreenPos()
 {
 	return screenPos;
+}
+
+sf::Vector2f Snake::GetHeadPos()
+{
+	headPos = SegmentList.front();
+	return headPos;
 }
 
 int Snake::GetScore()

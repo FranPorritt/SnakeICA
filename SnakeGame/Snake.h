@@ -19,6 +19,7 @@ protected:
 	sf::Vector2f screenPos;
 	sf::Color color;
 	float radius;
+	sf::Vector2f headPos;
 	
 	EDirection direction = EDirection::eNorth;
 
@@ -32,7 +33,8 @@ protected:
 	int drowningSteps = 10;
 
 	std::list<sf::Vector2f>SegmentList;
-	int score;
+	int BonusLength = 5;
+	int score = 0;
 
 public:
 	Snake(sf::Vector2f screenPosArg, sf::Color colorArg, float radiusArg);
@@ -51,10 +53,14 @@ public:
 	void Floating();
 	// Adds new segment to snake
 	void GrowTail();
+	// Adds multiple new segments to snake
+	void GrowBonusTail();
 	// Returns if dead
 	bool DeadCheck();
 	// Returns screen position
 	sf::Vector2f GetScreenPos();
+	// Returns head screen position
+	sf::Vector2f GetHeadPos();
 	// Returns player score
 	int GetScore();
 

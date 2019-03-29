@@ -16,6 +16,12 @@ private:
 	int closestValuePos = 0;
 	int secondClosestValue = 0;
 	int secondClosestValuePos = 0;
+	int thirdClosestValue = 0;
+	int thirdClosestValuePos = 0;
+	int fourthClosestValue = 0;
+	int fourthClosestValuePos = 0;
+	int fifthClosestValue = 0;
+	int fifthClosestValuePos = 0;
 
 	sf::Vector2f AITargetCollectable;
 	int xTargetDistance = 0;
@@ -43,6 +49,6 @@ public:
 	sf::Vector2f SetRandomDestination();
 
 	// Clears segment list
-	void Dead(sf::RenderWindow & window);
+	void Dead();
 };
 
