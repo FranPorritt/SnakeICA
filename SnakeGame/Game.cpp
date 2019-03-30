@@ -538,10 +538,10 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 			}
 
 			// AI VS Player
-			if (aiSnakes[snakeIndex]->GetHeadPos() == playerSnake->GetScreenPos()) //BEING CALLED WHEN SNAKED AREN'T TOUCHING
+			/*if (aiSnakes[snakeIndex]->GetHeadPos() == playerSnake->GetScreenPos()) //BEING CALLED WHEN SNAKED AREN'T TOUCHING
 			{
 				aiSnakes[snakeIndex]->Dead();
-			}
+			}*/
 
 			// AI VS AI
 			for (size_t secondSnake = snakeIndex + 1; secondSnake < aiSnakes.size(); secondSnake++)
