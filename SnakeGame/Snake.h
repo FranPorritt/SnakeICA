@@ -30,11 +30,13 @@ protected:
 	// Air variables
 	int movementSteps = 0;
 	int breathSteps = 100;
-	int drowningSteps = 10;
+	int drowningSteps = 5;
 
 	std::list<sf::Vector2f>SegmentList;
 	int BonusLength = 5;
 	int score = 0;
+
+	bool isAIColliding = false;
 
 public:
 	Snake(sf::Vector2f screenPosArg, sf::Color colorArg, float radiusArg);
@@ -59,7 +61,7 @@ public:
 	bool DeadCheck();
 	// Returns screen position
 	sf::Vector2f GetScreenPos();
-	sf::Vector2f GetTailPos();
+	bool AICollision(sf::Vector2f& aiHeadPos);
 	// Returns head screen position
 	sf::Vector2f GetHeadPos();
 	// Returns player score

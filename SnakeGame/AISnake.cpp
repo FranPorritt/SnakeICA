@@ -125,9 +125,11 @@ void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 			CollectableNorth();
 		}
 	}
+
+	std::cout << "PATH FOUND" << std::endl;
 }
 
-void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos)
+void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos, std::vector<Collectable*>& collectableItems)
 {
 	AICollectableDistance.clear();
 
@@ -173,6 +175,24 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 				else
 				{
 					direction = EDirection::eSouth;
+				}
+			}
+		}
+	}
+
+	if (screenPos.y == screenHeight - radius * 2) // South Edge
+	{
+		if (direction == EDirection::eSouth) //Heading towards edge
+		{
+			if (rand() % edgeChance != 0)
+			{
+				if ((rand() % 2 == 0) && (!isAboveWater))
+				{
+					direction = EDirection::eWest;
+				}
+				else
+				{
+					direction = EDirection::eEast;
 				}
 			}
 		}
@@ -264,6 +284,11 @@ void AISnake::BelowWater()
 void AISnake::GoForAir()
 {
 	direction = EDirection::eNorth;
+}
+
+bool AISnake::GetDrowning()
+{
+	return isDrowning;
 }
 
 void AISnake::CollectableNorth()

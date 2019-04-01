@@ -424,12 +424,13 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 				break;
 			}
 
-			// AI VS Player
-			if (!aiSnakes[snakeIndex]->DeadCheck())
+			if (!aiSnakes[snakeIndex]->DeadCheck()) // Checks AI is alive
 			{
-				if (aiSnakes[snakeIndex]->GetHeadPos() == playerSnake->GetTailPos()) // NOT KILLING AI SNAKE WHEN COLLIDING WITH PLAYER BODY, maybe pass in ai head pos to player and compare instead
+				aiHeadPos = aiSnakes[snakeIndex]->GetHeadPos();
+
+				// AI VS PLAYER
+				if (playerSnake->AICollision(aiHeadPos))
 				{
-					std::cout << "AI SNAKE COLLIDING WITH PLAYER" << std::endl;
 					aiSnakes[snakeIndex]->Dead();
 					break;
 				}
@@ -437,15 +438,16 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 				// AI VS AI
 				for (size_t secondSnake = snakeIndex + 1; secondSnake < aiSnakes.size(); secondSnake++)
 				{
-					if (!aiSnakes[secondSnake]->DeadCheck())
+					if (!aiSnakes[secondSnake]->DeadCheck()) // Checks AI is alive
 					{
-						if (aiSnakes[snakeIndex]->GetHeadPos() == aiSnakes[secondSnake]->GetScreenPos())
+						if (aiSnakes[secondSnake]->AICollision(aiHeadPos))
 						{
 							aiSnakes[snakeIndex]->Dead();
 							break;
 						}
 
-						if (aiSnakes[secondSnake]->GetHeadPos() == aiSnakes[snakeIndex]->GetScreenPos())
+						aiHeadPos = aiSnakes[secondSnake]->GetHeadPos();
+						if (aiSnakes[snakeIndex]->AICollision(aiHeadPos))
 						{
 							aiSnakes[secondSnake]->Dead();
 							break;
@@ -466,9 +468,9 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 			if (!s->DeadCheck())
 			{
 				s->Move();
-				s->Update(screenWidth, screenHeight, window, waterScreenPos);
+				s->Update(screenWidth, screenHeight, window, waterScreenPos, collectableItems);
 				s->Render(window);
-				s->Pathfinding(collectableItems); // Determines which collectable is closest
+				//s->Pathfinding(collectableItems); // Determines which collectable is closest
 			}
 		}
 
@@ -579,6 +581,16 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 			waterLeak = 0;
 		}
 		waterLeak++;
+
+		if (pathfindingSteps >= 10)
+		{
+			for (AISnake *s : aiSnakes)
+			{
+				s->Pathfinding(collectableItems); // Determines which collectable is closest
+			}
+			pathfindingSteps = 0;
+		}
+		pathfindingSteps++;
 
 		if (playerSnake->DeadCheck())
 		{

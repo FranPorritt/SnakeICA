@@ -30,6 +30,8 @@ protected:
 	int aiPlayers = 2;
 	int activeAI = aiSnakes.size();
 	bool allAIDead = false;
+	sf::Vector2f aiHeadPos;
+	int pathfindingSteps = 9;
 
 	// AI Snake Pathfinding values
 	int xDistance = 0;

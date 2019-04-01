@@ -34,12 +34,13 @@ public:
 	void Move() override;
 	void CollectableDistance(int& distance);
 	void Pathfinding(std::vector<Collectable*>& collectableItems);
-	void Update(const int &screenWidth, const int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos) override;
+	void Update(const int &screenWidth, const int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos, std::vector<Collectable*>& collectableItems);
 
 	// Sets direction based on x position
 	void AboveWater(const int &screenWidth) override;
 	void BelowWater() override;
 	void GoForAir();
+	bool GetDrowning();
 
 	// Sets direction
 	void CollectableNorth();

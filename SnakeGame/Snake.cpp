@@ -189,12 +189,17 @@ sf::Vector2f Snake::GetScreenPos()
 	return screenPos;
 }
 
-sf::Vector2f Snake::GetTailPos()
+bool Snake::AICollision(sf::Vector2f& aiHeadPos)
 {
 	for (auto &segment : SegmentList)
 	{
-		return screenPos;
+		if (segment == aiHeadPos)
+		{
+			isAIColliding = true;
+		}
 	}
+
+	return isAIColliding;
 }
 
 sf::Vector2f Snake::GetHeadPos()
