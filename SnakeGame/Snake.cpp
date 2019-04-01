@@ -28,19 +28,19 @@ void Snake::Render(sf::RenderWindow & window)
 
 void Snake::Move()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
 	{
 		direction = EDirection::eNorth;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::S)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
 	{
 		direction = EDirection::eSouth;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
 	{
 		direction = EDirection::eWest;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::D)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
 	{
 		direction = EDirection::eEast;
 	}
@@ -187,6 +187,14 @@ bool Snake::DeadCheck()
 sf::Vector2f Snake::GetScreenPos()
 {
 	return screenPos;
+}
+
+sf::Vector2f Snake::GetTailPos()
+{
+	for (auto &segment : SegmentList)
+	{
+		return screenPos;
+	}
 }
 
 sf::Vector2f Snake::GetHeadPos()

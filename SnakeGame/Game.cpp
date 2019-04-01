@@ -413,6 +413,48 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 		while (clock.getElapsedTime().asMilliseconds() < 175);
 		clock.restart();
 
+		// Snake Vs Snake Collisions
+		for (size_t snakeIndex = 0; snakeIndex < aiSnakes.size(); snakeIndex++)
+		{
+			// Player VS AI
+			if (playerSnake->GetHeadPos() == aiSnakes[snakeIndex]->GetScreenPos())
+			{
+				playerSnakeScore = playerSnake->GetScore();
+				currentState = gameState::gameOver;
+				break;
+			}
+
+			// AI VS Player
+			if (!aiSnakes[snakeIndex]->DeadCheck())
+			{
+				if (aiSnakes[snakeIndex]->GetHeadPos() == playerSnake->GetTailPos()) // NOT KILLING AI SNAKE WHEN COLLIDING WITH PLAYER BODY, maybe pass in ai head pos to player and compare instead
+				{
+					std::cout << "AI SNAKE COLLIDING WITH PLAYER" << std::endl;
+					aiSnakes[snakeIndex]->Dead();
+					break;
+				}
+
+				// AI VS AI
+				for (size_t secondSnake = snakeIndex + 1; secondSnake < aiSnakes.size(); secondSnake++)
+				{
+					if (!aiSnakes[secondSnake]->DeadCheck())
+					{
+						if (aiSnakes[snakeIndex]->GetHeadPos() == aiSnakes[secondSnake]->GetScreenPos())
+						{
+							aiSnakes[snakeIndex]->Dead();
+							break;
+						}
+
+						if (aiSnakes[secondSnake]->GetHeadPos() == aiSnakes[snakeIndex]->GetScreenPos())
+						{
+							aiSnakes[secondSnake]->Dead();
+							break;
+						}
+					}
+				}
+			}
+		}
+
 		water->Render(window);
 
 		playerSnake->Move();
@@ -421,10 +463,13 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 
 		for (AISnake *s : aiSnakes)
 		{
-			s->Move();
-			s->Update(screenWidth, screenHeight, window, waterScreenPos);
-			s->Render(window);
-			s->Pathfinding(collectableItems); // Determines which collectable is closest
+			if (!s->DeadCheck())
+			{
+				s->Move();
+				s->Update(screenWidth, screenHeight, window, waterScreenPos);
+				s->Render(window);
+				s->Pathfinding(collectableItems); // Determines which collectable is closest
+			}
 		}
 
 		for (Collectable *c : collectableItems)
@@ -524,37 +569,6 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 			if (s->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
 			{
 				s->Floating();
-			}
-		}
-
-		// Snake Vs Snake Collisions
-		for (size_t snakeIndex = 0; snakeIndex < aiSnakes.size(); snakeIndex++)
-		{
-			// Player VS AI
-			if (playerSnake->GetHeadPos() == aiSnakes[snakeIndex]->GetScreenPos())
-			{
-				playerSnakeScore = playerSnake->GetScore();
-				currentState = gameState::gameOver;
-			}
-
-			// AI VS Player
-			/*if (aiSnakes[snakeIndex]->GetHeadPos() == playerSnake->GetScreenPos()) //BEING CALLED WHEN SNAKED AREN'T TOUCHING
-			{
-				aiSnakes[snakeIndex]->Dead();
-			}*/
-
-			// AI VS AI
-			for (size_t secondSnake = snakeIndex + 1; secondSnake < aiSnakes.size(); secondSnake++)
-			{
-				if (aiSnakes[snakeIndex]->GetHeadPos() == aiSnakes[secondSnake]->GetScreenPos())
-				{
-					aiSnakes[snakeIndex]->Dead();
-				}
-
-				if (aiSnakes[secondSnake]->GetHeadPos() == aiSnakes[snakeIndex]->GetScreenPos())
-				{
-					aiSnakes[secondSnake]->Dead();
-				}
 			}
 		}
 

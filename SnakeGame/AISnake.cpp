@@ -107,12 +107,10 @@ void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 	{
 		if (AITargetCollectable.x > GetScreenPos().x)
 		{
-			std::cout << "Moving east" << std::endl;
 			CollectableEast();
 		}
 		else
 		{
-			std::cout << "Moving west" << std::endl;
 			CollectableWest();
 		}
 	}
@@ -120,12 +118,10 @@ void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 	{
 		if (AITargetCollectable.y > GetScreenPos().y)
 		{
-			std::cout << "Moving south" << std::endl;
 			CollectableSouth();
 		}
 		else
 		{
-			std::cout << "Moving north" << std::endl;
 			CollectableNorth();
 		}
 	}
@@ -220,7 +216,7 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 		if (movementSteps >= drowningSteps)
 		{
 			SegmentList.pop_back();
-			movementSteps = 0; // ISSUE ONCE SNAKE IS DEAD I THINK, STILL TRACKING BREATH AND TRYING TO DELETE SEGMENTS
+			movementSteps = 0; // ISSUE ONCE SNAKE IS DEAD I THINK, STILL TRACKING BREATH AND TRYING TO DELETE SEGMENTS. potentially fixed
 		}
 	}
 

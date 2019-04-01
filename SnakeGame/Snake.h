@@ -59,6 +59,7 @@ public:
 	bool DeadCheck();
 	// Returns screen position
 	sf::Vector2f GetScreenPos();
+	sf::Vector2f GetTailPos();
 	// Returns head screen position
 	sf::Vector2f GetHeadPos();
 	// Returns player score
