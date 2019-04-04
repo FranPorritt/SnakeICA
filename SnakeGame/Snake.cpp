@@ -30,19 +30,31 @@ void Snake::Move()
 {
 	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
 	{
-		direction = EDirection::eNorth;
+		if (direction != EDirection::eSouth)
+		{
+			direction = EDirection::eNorth;
+		}
 	}
 	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::S)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
 	{
-		direction = EDirection::eSouth;
+		if (direction != EDirection::eNorth)
+		{
+			direction = EDirection::eSouth;
+		}
 	}
 	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
 	{
-		direction = EDirection::eWest;
+		if (direction != EDirection::eEast)
+		{
+			direction = EDirection::eWest;
+		}
 	}
 	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::D)) || (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
 	{
-		direction = EDirection::eEast;
+		if (direction != EDirection::eWest)
+		{
+			direction = EDirection::eEast;
+		}
 	}
 	else if (isDead)
 	{

@@ -18,6 +18,7 @@ class Game
 {
 protected:
 	bool isRestarting = false;
+	bool gameStarting = false;
 
 	std::vector<Collectable*>collectableItems;
 	int maxActiveCollectables = 5;
@@ -31,7 +32,7 @@ protected:
 	int activeAI = aiSnakes.size();
 	bool allAIDead = false;
 	sf::Vector2f aiHeadPos;
-	int pathfindingSteps = 9;
+	int pathfindingSteps = 4;
 
 	// AI Snake Pathfinding values
 	int xDistance = 0;

@@ -582,7 +582,7 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 		}
 		waterLeak++;
 
-		if (pathfindingSteps >= 10)
+		if (pathfindingSteps >= 5)
 		{
 			for (AISnake *s : aiSnakes)
 			{
