@@ -2,11 +2,12 @@
 #include <SFML/Graphics.hpp>
 #include "Collectable.h"
 #include "AISnake.h"
+#include "MenuSnake.h"
 #include <vector>
 
 enum class gameState
 {
-	menu,
+	playerSelect,
 	singlePlayer,
 	aiPlayer,
 	gameOver,
@@ -25,10 +26,17 @@ protected:
 
 	int waterLeak = 0;
 
-	gameState currentState = gameState::menu;
+	gameState currentState = gameState::playerSelect;
+
+	// Player Select Menu
+	int currentSelection = 0;
+	int wiggleTimer = 10;
+	int wiggleCount = 0;
+	std::vector<MenuSnake*>singleSnakeBody;
+	std::vector<MenuSnake*>optionSnakeBody;
 
 	std::vector<AISnake*>aiSnakes;
-	int aiPlayers = 2;
+	int aiPlayers = 0;
 	int activeAI = aiSnakes.size();
 	bool allAIDead = false;
 	sf::Vector2f aiHeadPos;
@@ -46,7 +54,7 @@ public:
 	~Game();
 
 	void Update(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos);
-	void MainMenu(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::menu
+	void PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::playerSelect
 	void GameOverScreen(sf::RenderWindow& window); // gameState::gameOver
 	void GameWonScreen(sf::RenderWindow& window); // gameState::gameWon
 	void Restart(sf::RenderWindow& window);

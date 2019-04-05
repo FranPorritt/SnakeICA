@@ -156,6 +156,7 @@
     <ClCompile Include="Collectable.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuSnake.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="Water.cpp" />
   </ItemGroup>
@@ -163,6 +164,7 @@
     <ClInclude Include="AISnake.h" />
     <ClInclude Include="Collectable.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="MenuSnake.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="Water.h" />
   </ItemGroup>

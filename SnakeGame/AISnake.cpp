@@ -67,19 +67,19 @@ void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 		}
 	}
 	
-	if ((rand() % 5 == 0) && (collectableItems[closestValuePos]->Alive()))
+	if (collectableItems[closestValuePos]->Alive())
 	{
 		AITargetCollectable = collectableItems[closestValuePos]->GetScreenPos();
 	}
-	else if ((rand() % 5 == 1) && (collectableItems[secondClosestValuePos]->Alive()))
+	else if (collectableItems[secondClosestValuePos]->Alive())
 	{
 		AITargetCollectable = collectableItems[secondClosestValuePos]->GetScreenPos();
 	}
-	else if ((rand() % 5 == 2) && (collectableItems[thirdClosestValuePos]->Alive()))
+	else if (collectableItems[thirdClosestValuePos]->Alive())
 	{
 		AITargetCollectable = collectableItems[thirdClosestValuePos]->GetScreenPos();
 	}
-	else if ((rand() % 5 == 3) && (collectableItems[fourthClosestValuePos]->Alive()))
+	else if (collectableItems[fourthClosestValuePos]->Alive())
 	{
 		AITargetCollectable = collectableItems[fourthClosestValuePos]->GetScreenPos();
 	}
@@ -125,8 +125,6 @@ void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 			CollectableNorth();
 		}
 	}
-
-	std::cout << "PATH FOUND" << std::endl;
 }
 
 void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::RenderWindow & window, sf::Vector2f &waterScreenPos, std::vector<Collectable*>& collectableItems)
@@ -227,6 +225,7 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 	if ((!isAboveWater) && (movementSteps >= breathSteps)) // Checks if snake is drowning
 	{
 		isDrowning = true;
+		std::cout << "DROWNING" << std::endl;
 	}
 
 	if (isDrowning) // Removes a tail segment until surface is reached
