@@ -47,9 +47,7 @@ int main()
 
 		if (snakeGame->GetRestart())
 		{		
-			delete snakeGame;
-
-			Game* snakeGame = new Game();
+			snakeGame = new Game();
 		}
 	}
 

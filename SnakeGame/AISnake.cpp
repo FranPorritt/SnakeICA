@@ -49,7 +49,6 @@ void AISnake::CollectableDistance(int& distance)
 
 void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 {
-	closestValue = 76000;
 	for (int distanceIndex = 0; distanceIndex < AICollectableDistance.size(); distanceIndex++)
 	{
 		if (AICollectableDistance[distanceIndex] < closestValue)
@@ -67,6 +66,7 @@ void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 		}
 	}
 	
+	// Checks collectable is active
 	if (collectableItems[closestValuePos]->Alive())
 	{
 		AITargetCollectable = collectableItems[closestValuePos]->GetScreenPos();
@@ -91,6 +91,7 @@ void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 	{
 		AITargetCollectable = SetRandomDestination();
 	}
+	// Gets x and y distances and makes them positive if negative
 	xTargetDistance = GetScreenPos().x - AITargetCollectable.x;
 	if (xTargetDistance < 0)
 	{
@@ -107,22 +108,34 @@ void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 	{
 		if (AITargetCollectable.x > GetScreenPos().x)
 		{
-			CollectableEast();
+			if (direction != EDirection::eWest)
+			{
+				CollectableEast();
+			}
 		}
 		else
 		{
-			CollectableWest();
+			if (direction != EDirection::eEast)
+			{
+				CollectableWest();
+			}
 		}
 	}
 	else
 	{
 		if (AITargetCollectable.y > GetScreenPos().y)
 		{
-			CollectableSouth();
+			if (direction != EDirection::eNorth)
+			{
+				CollectableSouth();
+			}
 		}
 		else
 		{
-			CollectableNorth();
+			if (direction != EDirection::eSouth)
+			{
+				CollectableNorth();
+			}
 		}
 	}
 }
@@ -197,11 +210,11 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 	}
 
 	// Self Collision Check
-	int index = 0;
+	int index = 1;
 	for (auto &segment : SegmentList)
 	{
 		// Skips the first element so the head isn't being compared to the head, only the body.
-		if (++index > 1)
+		if (index++ > 1)
 		{
 			// Checks head doesn't collide with body.
 			if (SegmentList.front() == segment)
@@ -235,12 +248,13 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 		if (movementSteps >= drowningSteps)
 		{
 			SegmentList.pop_back();
-			movementSteps = 0; // ISSUE ONCE SNAKE IS DEAD I THINK, STILL TRACKING BREATH AND TRYING TO DELETE SEGMENTS. potentially fixed
+			movementSteps = 0; 
 		}
 	}
 
 	if (SegmentList.size() == 0) // Checks if snake is alive
 	{
+		std::cout << "AI DROWNED" << std::endl;
 		isDead = true;
 	}
 
@@ -290,6 +304,25 @@ bool AISnake::GetDrowning()
 	return isDrowning;
 }
 
+int AISnake::GetMovementSteps()
+{
+	return movementSteps;
+}
+
+bool AISnake::PlayerCollision(sf::Vector2f& playerHeadPos)
+{
+	for (auto &segment : SegmentList)
+	{
+		if (segment == playerHeadPos)
+		{
+			isPlayerColliding = true;
+			break;
+		}
+	}
+
+	return isPlayerColliding;
+}
+
 void AISnake::CollectableNorth()
 {
 	if (direction != EDirection::eSouth)
@@ -334,5 +367,6 @@ sf::Vector2f AISnake::SetRandomDestination()
 
 void AISnake::Dead()
 {
+	isDead = true;
 	SegmentList.clear();
 }

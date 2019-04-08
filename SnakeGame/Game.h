@@ -4,6 +4,8 @@
 #include "AISnake.h"
 #include "MenuSnake.h"
 #include <vector>
+#include <iostream>
+#include <fstream>
 
 enum class gameState
 {
@@ -18,15 +20,21 @@ enum class gameState
 class Game
 {
 protected:
+	gameState currentState = gameState::playerSelect;
+
+	// High score
+	int highScore;
+	std::ofstream output;
+	std::ifstream input;
+
+
 	bool isRestarting = false;
 	bool gameStarting = false;
 
 	std::vector<Collectable*>collectableItems;
 	int maxActiveCollectables = 5;
 
-	int waterLeak = 0;
-
-	gameState currentState = gameState::playerSelect;
+	int waterLeak = 0;	
 
 	// Player Select Menu
 	int currentSelection = 0;
@@ -35,19 +43,25 @@ protected:
 	std::vector<MenuSnake*>singleSnakeBody;
 	std::vector<MenuSnake*>optionSnakeBody;
 
+	// AI Stuff
 	std::vector<AISnake*>aiSnakes;
 	int aiPlayers = 0;
 	int activeAI = aiSnakes.size();
 	bool allAIDead = false;
 	sf::Vector2f aiHeadPos;
-	int pathfindingSteps = 4;
+	sf::Vector2f playerHeadPos;
+	sf::Color color[3] = { sf::Color::Yellow, sf::Color::Magenta, sf::Color::Cyan };
+
+	// AI Air
+	float airLeft = 0;
+	sf::Vector2f airPos[3] = { {300, 10}, {450,10}, {600,10} };
 
 	// AI Snake Pathfinding values
 	int xDistance = 0;
 	int yDistance = 0;
 	int distance = 0;
 
-	int playerSnakeScore = 0;
+	int playerSnakeScore = 0;	
 
 public:
 	Game();
@@ -62,6 +76,8 @@ public:
 	// Runs game
 	void Run(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::singlePlayer
 	void AIRun(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos); // gameState::aiPlayer
+
+	void DisplayAIAir(sf::RenderWindow& window, sf::Vector2f &airPos, sf::Color &color);
 
 	// Returns state
 	gameState GetState();

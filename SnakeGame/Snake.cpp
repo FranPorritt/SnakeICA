@@ -107,11 +107,11 @@ void Snake::Update(const int &screenWidth, const int &screenHeight, sf::RenderWi
 	}
 
 	// Self Collision Check
-	int index = 0;
+	int index = 1;
 	for (auto &segment : SegmentList)
 	{
 		// Skips the first element so the head isn't being compared to the head, only the body.
-		if (++index > 1)
+		if (index++ > 1)
 		{
 			// Checks head doesn't collide with body.
 			if (SegmentList.front() == segment)
@@ -183,9 +183,17 @@ void Snake::GrowTail()
 	SegmentList.push_front(screenPos);
 }
 
-void Snake::GrowBonusTail()
+void Snake::GrowWhiteBonusTail()
 {
-	for (int bonusLoop = 0; bonusLoop < BonusLength; bonusLoop++)
+	for (int bonusLoop = 0; bonusLoop < WhiteBonusLength; bonusLoop++)
+	{
+		SegmentList.push_front(screenPos);
+	}
+}
+
+void Snake::GrowPurpleBonusTail()
+{
+	for (int bonusLoop = 0; bonusLoop < PurpleBonusLength; bonusLoop++)
 	{
 		SegmentList.push_front(screenPos);
 	}
@@ -208,10 +216,16 @@ bool Snake::AICollision(sf::Vector2f& aiHeadPos)
 		if (segment == aiHeadPos)
 		{
 			isAIColliding = true;
+			break;
 		}
 	}
 
 	return isAIColliding;
+}
+
+void Snake::ResetCollision()
+{
+	isAIColliding = false;
 }
 
 sf::Vector2f Snake::GetHeadPos()
@@ -243,7 +257,6 @@ void Snake::DisplayAir(sf::RenderWindow & window)
 	airText.setPosition(35, 15);
 	airText.setString("AIR: ");
 	airText.setFillColor(sf::Color::Red);
-
 	airText.setOrigin(floor(airText.getLocalBounds().width / 2), floor(airText.getLocalBounds().height / 2));
 
 	sf::RectangleShape airBackground;

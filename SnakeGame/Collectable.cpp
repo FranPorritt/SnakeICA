@@ -10,12 +10,20 @@ Collectable::Collectable(sf::Vector2f screenPosArg, float radiusArg) :
 	if (rand() % 3 == 0)
 	{
 		color = sf::Color::White;
-		isBonus = true;
+		isWhiteBonus = true;
+		isPurpleBonus = false;
+	}
+	else if (rand() % 20 == 0)
+	{
+		color = sf::Color(138, 43, 226); // Purple
+		isWhiteBonus = false;
+		isPurpleBonus = true;
 	}
 	else
 	{
 		color = sf::Color::Red;
-		isBonus = false;
+		isWhiteBonus = false;
+		isPurpleBonus = false;
 	}
 }
 
@@ -65,12 +73,39 @@ sf::Vector2f Collectable::NewScreenPos(sf::Vector2f &screenPos, Water& water, co
 	float y = (rand() % 36) * 20;
 
 	// Checks collectable doesn't spawn above water
-	do
+	if (water.GetScreenPos().y < 720)
 	{
-		y = (rand() % 36) * 20;
-	} while (y < water.GetScreenPos().y);
+		do
+		{
+			y = (rand() % 36) * 20;
+		} while (y < water.GetScreenPos().y);
+	}
+	else
+	{
+		y = 740;
+	}
 
 	screenPos = { x,y };
+
+	if (rand() % 3 == 0)
+	{
+		color = sf::Color::White;
+		isWhiteBonus = true;
+		isPurpleBonus = false;
+	}
+	else if (rand() % 10 == 0)
+	{
+		color = sf::Color(138, 43, 226); // Purple
+		isWhiteBonus = false;
+		isPurpleBonus = true;
+	}
+	else
+	{
+		color = sf::Color::Red;
+		isWhiteBonus = false;
+		isPurpleBonus = false;
+	}
+
 	isPickedUp = false;
 
 	return screenPos;
@@ -86,7 +121,12 @@ sf::Vector2f Collectable::GetScreenPos()
 	return screenPos;
 }
 
-bool Collectable::GetBonus()
+bool Collectable::GetWhiteBonus()
 {
-	return isBonus;
+	return isWhiteBonus;
+}
+
+bool Collectable::GetPurpleBonus()
+{
+	return isPurpleBonus;
 }

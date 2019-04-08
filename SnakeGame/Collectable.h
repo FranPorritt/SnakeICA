@@ -12,7 +12,8 @@ protected:
 	int aliveCheckTime = 4;
 	bool aliveFlag = false;
 	bool isPickedUp = false;
-	bool isBonus = false;
+	bool isWhiteBonus = false;
+	bool isPurpleBonus = false;
 
 public:
 	Collectable() {}
@@ -34,7 +35,9 @@ public:
 	void Floating();
 	// Returns screen position
 	sf::Vector2f GetScreenPos();
-	// Returns isBonus
-	bool GetBonus();
+	// Returns isWhiteBonus
+	bool GetWhiteBonus();
+	// Returns isPurpleBonus
+	bool GetPurpleBonus();
 };
 

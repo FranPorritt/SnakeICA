@@ -12,7 +12,7 @@ private:
 	// Pathfinding
 	std::vector<int> AICollectableDistance;
 	int distance = 0;
-	int closestValue = 0;
+	int closestValue = 76000;
 	int closestValuePos = 0;
 	int secondClosestValue = 0;
 	int secondClosestValuePos = 0;
@@ -26,6 +26,8 @@ private:
 	sf::Vector2f AITargetCollectable;
 	int xTargetDistance = 0;
 	int yTargetDistance = 0;
+
+	bool isPlayerColliding = false;
 
 public:
 	AISnake(sf::Vector2f screenPosArg, sf::Color colorArg, float radiusArg);
@@ -41,6 +43,9 @@ public:
 	void BelowWater() override;
 	void GoForAir();
 	bool GetDrowning();
+	int GetMovementSteps();
+	bool PlayerCollision(sf::Vector2f& playerHeadPos);
+
 
 	// Sets direction
 	void CollectableNorth();

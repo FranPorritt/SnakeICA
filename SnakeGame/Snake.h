@@ -30,10 +30,11 @@ protected:
 	// Air variables
 	int movementSteps = 0;
 	int breathSteps = 100;
-	int drowningSteps = 5;
+	int drowningSteps = 3;
 
 	std::list<sf::Vector2f>SegmentList;
-	int BonusLength = 5;
+	int WhiteBonusLength = 3;
+	int PurpleBonusLength = 7;
 	int score = 0;
 
 	bool isAIColliding = false;
@@ -56,12 +57,16 @@ public:
 	// Adds new segment to snake
 	void GrowTail();
 	// Adds multiple new segments to snake
-	void GrowBonusTail();
+	void GrowWhiteBonusTail();
+	void GrowPurpleBonusTail();
 	// Returns if dead
 	bool DeadCheck();
 	// Returns screen position
 	sf::Vector2f GetScreenPos();
+	// Return if colliding
 	bool AICollision(sf::Vector2f& aiHeadPos);
+	// Resets colliding bool to false
+	void ResetCollision();
 	// Returns head screen position
 	sf::Vector2f GetHeadPos();
 	// Returns player score
