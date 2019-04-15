@@ -55,18 +55,32 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, 
 		std::cout << "ERROR" << std::endl;
 	}
 
-	sf::Vector2f singleSnakePos = { 180, 440 };
+	sf::Vector2f playerSnakePos = { 440, 440 };
 	for (int snakeIndex = 0; snakeIndex < 7; snakeIndex++)
 	{
-		singleSnakeBody.push_back(new MenuSnake(singleSnakePos, sf::Color::Green, 10.0f));
-		singleSnakePos.x += 20.0f;
+		playerSnakeBody.push_back(new MenuSnake(playerSnakePos, sf::Color::Green, 10.0f));
+		playerSnakePos.x += 20.0f;
 	}
 
-	sf::Vector2f optionSnakePos = { 680, 440 };
+	sf::Vector2f AI1SnakePos = { 440, 490 };
 	for (int snakeIndex = 0; snakeIndex < 7; snakeIndex++)
 	{
-		optionSnakeBody.push_back(new MenuSnake(optionSnakePos, sf::Color::Green, 10.0f));
-		optionSnakePos.x += 20.0f;
+		AI1SnakeBody.push_back(new MenuSnake(AI1SnakePos, sf::Color::Yellow, 10.0f));
+		AI1SnakePos.x += 20.0f;
+	}
+
+	sf::Vector2f AI2SnakePos = { 440, 540 };
+	for (int snakeIndex = 0; snakeIndex < 7; snakeIndex++)
+	{
+		AI2SnakeBody.push_back(new MenuSnake(AI2SnakePos, sf::Color::Magenta, 10.0f));
+		AI2SnakePos.x += 20.0f;
+	}
+
+	sf::Vector2f AI3SnakePos = { 440, 590 };
+	for (int snakeIndex = 0; snakeIndex < 7; snakeIndex++)
+	{
+		AI3SnakeBody.push_back(new MenuSnake(AI3SnakePos, sf::Color::Cyan, 10.0f));
+		AI3SnakePos.x += 20.0f;
 	}
 
 	Water* water = new Water(sf::Color::Blue, { (float)screenWidth, (float)screenHeight });
@@ -92,11 +106,6 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, 
 		clock.restart();
 
 		water->Render(window);
-
-		/*for (MenuSnake *ssb : singleSnakeBody)
-		{
-			ssb->Wiggle();
-		}*/
 
 		sf::Text titleText;
 		titleText.setFont(font);
@@ -169,11 +178,11 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, 
 		case 0:
 			window.draw(singleSelect);
 
-			/*for (MenuSnake *ssb : singleSnakeBody)
+			for (MenuSnake *ssb : playerSnakeBody)
 			{
 				ssb->Wiggle();
 				ssb->Render(window);
-			}*/
+			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			{
@@ -184,10 +193,15 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, 
 		case 1:
 			window.draw(oneSelect);
 
-			/*for (MenuSnake *osb : optionSnakeBody)
+			for (MenuSnake *osb : playerSnakeBody)
 			{
 				osb->Render(window);
-			}*/
+			}
+
+			for (MenuSnake *ai1 : AI1SnakeBody)
+			{
+				ai1->Render(window);
+			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			{
@@ -199,10 +213,20 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, 
 		case 2:
 			window.draw(twoSelect);
 
-			/*for (MenuSnake *osb : optionSnakeBody)
+			for (MenuSnake *osb : playerSnakeBody)
 			{
 				osb->Render(window);
-			}*/
+			}
+
+			for (MenuSnake *ai1 : AI1SnakeBody)
+			{
+				ai1->Render(window);
+			}
+
+			for (MenuSnake *ai2 : AI2SnakeBody)
+			{
+				ai2->Render(window);
+			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			{
@@ -214,10 +238,25 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, 
 		case 3:
 			window.draw(threeSelect);
 
-			/*for (MenuSnake *osb : optionSnakeBody)
+			for (MenuSnake *osb : playerSnakeBody)
 			{
 				osb->Render(window);
-			}*/
+			}
+
+			for (MenuSnake *ai1 : AI1SnakeBody)
+			{
+				ai1->Render(window);
+			}
+
+			for (MenuSnake *ai2 : AI2SnakeBody)
+			{
+				ai2->Render(window);
+			}
+
+			for (MenuSnake *ai3 : AI3SnakeBody)
+			{
+				ai3->Render(window);
+			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			{

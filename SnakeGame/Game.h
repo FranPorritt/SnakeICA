@@ -40,8 +40,10 @@ protected:
 	int currentSelection = 0;
 	int wiggleTimer = 10;
 	int wiggleCount = 0;
-	std::vector<MenuSnake*>singleSnakeBody;
-	std::vector<MenuSnake*>optionSnakeBody;
+	std::vector<MenuSnake*>playerSnakeBody;
+	std::vector<MenuSnake*>AI1SnakeBody;
+	std::vector<MenuSnake*>AI2SnakeBody;
+	std::vector<MenuSnake*>AI3SnakeBody;
 
 	// AI Stuff
 	std::vector<AISnake*>aiSnakes;
