@@ -46,13 +46,13 @@ f:\new folder\franp\documents\uni work\c++\snakeica\snakegame\game.cpp(829): war
               T=float
           ]
 f:\new folder\franp\documents\uni work\c++\snakeica\snakegame\game.cpp(881): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  main.cpp
-f:\new folder\franp\documents\uni work\c++\snakeica\snakegame\game.h(51): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   MenuSnake.cpp
   Snake.cpp
 f:\new folder\franp\documents\uni work\c++\snakeica\snakegame\game.h(51): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 f:\new folder\franp\documents\uni work\c++\snakeica\snakegame\snake.cpp(97): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 f:\new folder\franp\documents\uni work\c++\snakeica\snakegame\snake.cpp(246): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
   Water.cpp
+  main.cpp
+f:\new folder\franp\documents\uni work\c++\snakeica\snakegame\game.h(51): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Generating Code...
   SnakeGame.vcxproj -> F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\x64\Debug\SnakeGame.exe
