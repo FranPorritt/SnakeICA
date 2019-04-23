@@ -45,6 +45,9 @@ protected:
 	std::vector<MenuSnake*>AI2SnakeBody;
 	std::vector<MenuSnake*>AI3SnakeBody;
 
+	// Pause
+	bool isPaused = false;
+
 	// AI Stuff
 	std::vector<AISnake*>aiSnakes;
 	int aiPlayers = 0;

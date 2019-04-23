@@ -3,6 +3,7 @@
 #include "Water.h"
 #include "AISnake.h"
 #include "MenuSnake.h"
+#include "Pause.h"
 #include <iostream>
 
 Game::Game()
@@ -13,7 +14,7 @@ Game::~Game()
 {
 }
 
-void Game::Update(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos)
+void Game::Update(sf::RenderWindow& window, const int& screenWidth, const int& screenHeight, sf::Vector2f& waterScreenPos)
 {
 	switch (currentState)
 	{
@@ -46,7 +47,7 @@ void Game::Update(sf::RenderWindow& window, const int &screenWidth, const int &s
 	}
 }
 
-void Game::PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos)
+void Game::PlayerSelectScreen(sf::RenderWindow& window, const int& screenWidth, const int& screenHeight, sf::Vector2f& waterScreenPos)
 {
 	sf::Clock clock;
 	sf::Font font;
@@ -178,7 +179,7 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, 
 		case 0:
 			window.draw(singleSelect);
 
-			for (MenuSnake *ssb : playerSnakeBody)
+			for (MenuSnake* ssb : playerSnakeBody)
 			{
 				ssb->Wiggle();
 				ssb->Render(window);
@@ -193,12 +194,12 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, 
 		case 1:
 			window.draw(oneSelect);
 
-			for (MenuSnake *osb : playerSnakeBody)
+			for (MenuSnake* osb : playerSnakeBody)
 			{
 				osb->Render(window);
 			}
 
-			for (MenuSnake *ai1 : AI1SnakeBody)
+			for (MenuSnake* ai1 : AI1SnakeBody)
 			{
 				ai1->Render(window);
 			}
@@ -213,17 +214,17 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, 
 		case 2:
 			window.draw(twoSelect);
 
-			for (MenuSnake *osb : playerSnakeBody)
+			for (MenuSnake* osb : playerSnakeBody)
 			{
 				osb->Render(window);
 			}
 
-			for (MenuSnake *ai1 : AI1SnakeBody)
+			for (MenuSnake* ai1 : AI1SnakeBody)
 			{
 				ai1->Render(window);
 			}
 
-			for (MenuSnake *ai2 : AI2SnakeBody)
+			for (MenuSnake* ai2 : AI2SnakeBody)
 			{
 				ai2->Render(window);
 			}
@@ -238,22 +239,22 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int &screenWidth, 
 		case 3:
 			window.draw(threeSelect);
 
-			for (MenuSnake *osb : playerSnakeBody)
+			for (MenuSnake* osb : playerSnakeBody)
 			{
 				osb->Render(window);
 			}
 
-			for (MenuSnake *ai1 : AI1SnakeBody)
+			for (MenuSnake* ai1 : AI1SnakeBody)
 			{
 				ai1->Render(window);
 			}
 
-			for (MenuSnake *ai2 : AI2SnakeBody)
+			for (MenuSnake* ai2 : AI2SnakeBody)
 			{
 				ai2->Render(window);
 			}
 
-			for (MenuSnake *ai3 : AI3SnakeBody)
+			for (MenuSnake* ai3 : AI3SnakeBody)
 			{
 				ai3->Render(window);
 			}
@@ -477,7 +478,7 @@ void Game::GameWonScreen(sf::RenderWindow& window)
 			output << playerSnakeScore << std::endl;
 			output.close();
 		}
-		
+
 		sf::Text highScoreText;
 		highScoreText.setFont(font);
 		highScoreText.setCharacterSize(50);
@@ -511,13 +512,14 @@ void Game::Restart(sf::RenderWindow& window)
 	isRestarting = true;
 }
 
-void Game::Run(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos)
+void Game::Run(sf::RenderWindow& window, const int& screenWidth, const int& screenHeight, sf::Vector2f& waterScreenPos)
 {
 	sf::Clock clock;
 	srand(time(0));
 
 	Water* water = new Water(sf::Color::Blue, { (float)screenWidth, (float)screenHeight - 20.0f });
-	Snake* playerSnake = new Snake({ 500,740 }, sf::Color::Green, 10.0f);
+	Snake * playerSnake = new Snake({ 500,740 }, sf::Color::Green, 10.0f);
+	Pause * pause = new Pause();
 
 	// Creates collectables
 	for (int collectableIndex = 0; collectableIndex < maxActiveCollectables; collectableIndex++)
@@ -554,78 +556,96 @@ void Game::Run(sf::RenderWindow& window, const int &screenWidth, const int &scre
 		while (clock.getElapsedTime().asMilliseconds() < 175);
 		clock.restart();
 
-		water->Render(window);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			isPaused = !isPaused;
+		}
 
-		for (Collectable *c : collectableItems)
+		water->Render(window);
+		for (Collectable* c : collectableItems)
 		{
 			c->Render(window, screenWidth, screenHeight);
 		}
-
-		playerSnake->Move();
-		playerSnake->Update(screenWidth, screenHeight, window, waterScreenPos);
 		playerSnake->Render(window);
 
-		for (Collectable *c : collectableItems)
+		if (!isPaused)
 		{
-			// Checks for collisions with player
-			if (c->GetScreenPos() == playerSnake->GetScreenPos())
+			playerSnake->Move();
+			playerSnake->Update(screenWidth, screenHeight, window, waterScreenPos);
+
+
+			for (Collectable* c : collectableItems)
 			{
-				if (c->GetWhiteBonus())
+				// Checks for collisions with player
+				if (c->GetScreenPos() == playerSnake->GetScreenPos())
 				{
-					playerSnake->GrowWhiteBonusTail();
+					if (c->GetWhiteBonus())
+					{
+						playerSnake->GrowWhiteBonusTail();
+					}
+					else if (c->GetPurpleBonus())
+					{
+						playerSnake->GrowPurpleBonusTail();
+					}
+					else
+					{
+						playerSnake->GrowTail();
+					}
+					c->PickedUp(*water, screenHeight);
 				}
-				else if (c->GetPurpleBonus())
+
+				// Keeps collectables in playing field
+				if (c->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
 				{
-					playerSnake->GrowPurpleBonusTail();
+					c->Floating();
 				}
-				else
-				{
-					playerSnake->GrowTail();
-				}
-				c->PickedUp(*water, screenHeight);				
 			}
 
-			// Keeps collectables in playing field
-			if (c->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
+			// Checks if player is above water or not
+			if (playerSnake->GetScreenPos().y < water->GetScreenPos().y)
 			{
-				c->Floating();
+				playerSnake->AboveWater(screenWidth);
 			}
-		}
+			else
+			{
+				playerSnake->BelowWater();
+			}
 
-		// Checks if player is above water or not
-		if (playerSnake->GetScreenPos().y < water->GetScreenPos().y)
-		{
-			playerSnake->AboveWater(screenWidth);
+			// Checks if player is more than one above water level
+			if (playerSnake->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
+			{
+				playerSnake->Floating();
+			}
+
+			// Lowers water level
+			if (waterLeak >= 12)
+			{
+				water->Leak();
+				waterLeak = 0;
+			}
+			waterLeak++;
+
+			if (water->GetScreenPos().y > screenHeight)
+			{
+				playerSnakeScore = playerSnake->GetScore();
+				currentState = gameState::gameOver;
+			}
+
+			if (playerSnake->DeadCheck())
+			{
+				playerSnakeScore = playerSnake->GetScore();
+				currentState = gameState::gameOver;
+			}
 		}
 		else
 		{
-			playerSnake->BelowWater();
-		}
+			// Paused
+			pause->Render(window);
 
-		// Checks if player is more than one above water level
-		if (playerSnake->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
-		{
-			playerSnake->Floating();
-		}
-
-		// Lowers water level
-		if (waterLeak >= 12)
-		{
-			water->Leak();
-			waterLeak = 0;
-		}
-		waterLeak++;
-
-		if (water->GetScreenPos().y > screenHeight)
-		{
-			playerSnakeScore = playerSnake->GetScore();
-			currentState = gameState::gameOver;
-		}
-
-		if (playerSnake->DeadCheck())
-		{
-			playerSnakeScore = playerSnake->GetScore();
-			currentState = gameState::gameOver;
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) // Quit - Return to Menu
+			{
+				currentState = gameState::restart;
+			}
 		}
 
 		window.display();
@@ -634,19 +654,20 @@ void Game::Run(sf::RenderWindow& window, const int &screenWidth, const int &scre
 
 	delete playerSnake;
 	delete water;
-	for (Collectable *c : collectableItems)
+	for (Collectable* c : collectableItems)
 	{
 		delete c;
 	}
 }
 
-void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &screenHeight, sf::Vector2f &waterScreenPos)
+void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& screenHeight, sf::Vector2f & waterScreenPos)
 {
 	sf::Clock clock;
 	srand(time(0));
 
 	Water* water = new Water(sf::Color::Blue, { (float)screenWidth, (float)screenHeight - 20.0f });
-	Snake* playerSnake = new Snake({ 500,760 }, sf::Color::Green, 10.0f);
+	Snake * playerSnake = new Snake({ 500,760 }, sf::Color::Green, 10.0f);
+	Pause * pause = new Pause();
 
 	// Creates ai players
 	for (int aiSnakesIndex = 0; aiSnakesIndex < aiPlayers; aiSnakesIndex++)
@@ -699,209 +720,232 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 		while (clock.getElapsedTime().asMilliseconds() < 175);
 		clock.restart();
 
-		water->Render(window);
-
-		playerSnake->Move();
-		playerSnake->Update(screenWidth, screenHeight, window, waterScreenPos);
-		playerSnake->Render(window);
-
-		for (AISnake *s : aiSnakes)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		{
-			if (!s->DeadCheck())
-			{
-				s->Move();
-				s->Update(screenWidth, screenHeight, window, waterScreenPos, collectableItems);
-				s->Render(window);
-				s->Pathfinding(collectableItems); // Determines which collectable is closest
-			}
+			isPaused = !isPaused;
 		}
 
-		for (Collectable *c : collectableItems)
+		water->Render(window);
+		playerSnake->Render(window);
+		for (Collectable* c : collectableItems)
 		{
 			c->Render(window, screenWidth, screenHeight);
+		}
+		for (AISnake* ai : aiSnakes)
+		{
+			ai->Render(window);
+		}
 
-			// Keeps collectables in playing field
-			if (c->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
+		if (!isPaused)
+		{
+			playerSnake->Move();
+			playerSnake->Update(screenWidth, screenHeight, window, waterScreenPos);
+
+			for (AISnake* s : aiSnakes)
 			{
-				c->Floating();
+				if (!s->DeadCheck())
+				{
+					s->Move();
+					s->Update(screenWidth, screenHeight, window, waterScreenPos, collectableItems);
+					s->Pathfinding(collectableItems); // Determines which collectable is closest
+				}
 			}
 
-			// Checks for collisions with player
-			if (c->GetScreenPos() == playerSnake->GetScreenPos())
-			{				
-				if (c->GetWhiteBonus())
-				{
-					playerSnake->GrowWhiteBonusTail();
-				}
-				else if (c->GetPurpleBonus())
-				{
-					playerSnake->GrowPurpleBonusTail();
-				}
-				else
-				{
-					playerSnake->GrowTail();
-				}
-				c->PickedUp(*water, screenHeight);
-			}
-
-			// AI COLLECTABLE CHECKS
-			for (AISnake *s : aiSnakes)
+			for (Collectable* c : collectableItems)
 			{
-				// Checks for collisions with ai
-				if (c->GetScreenPos() == s->GetScreenPos())
+				// Keeps collectables in playing field
+				if (c->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
+				{
+					c->Floating();
+				}
+
+				// Checks for collisions with player
+				if (c->GetScreenPos() == playerSnake->GetScreenPos())
 				{
 					if (c->GetWhiteBonus())
 					{
-						s->GrowWhiteBonusTail();
+						playerSnake->GrowWhiteBonusTail();
 					}
 					else if (c->GetPurpleBonus())
 					{
-						s->GrowPurpleBonusTail();
+						playerSnake->GrowPurpleBonusTail();
 					}
 					else
 					{
-						s->GrowTail();
+						playerSnake->GrowTail();
 					}
 					c->PickedUp(*water, screenHeight);
-					std::cout << "AI PICKED UP" << std::endl;
+				}
+
+				// AI COLLECTABLE CHECKS
+				for (AISnake* s : aiSnakes)
+				{
+					// Checks for collisions with ai
+					if (c->GetScreenPos() == s->GetScreenPos())
+					{
+						if (c->GetWhiteBonus())
+						{
+							s->GrowWhiteBonusTail();
+						}
+						else if (c->GetPurpleBonus())
+						{
+							s->GrowPurpleBonusTail();
+						}
+						else
+						{
+							s->GrowTail();
+						}
+						c->PickedUp(*water, screenHeight);
+						std::cout << "AI PICKED UP" << std::endl;
+					}
 				}
 			}
-		}
 
-		// Snake Vs Snake Collisions
-		for (AISnake *s : aiSnakes)
-		{
-			if (!s->DeadCheck())
+			// Snake Vs Snake Collisions
+			for (AISnake* s : aiSnakes)
 			{
-				aiHeadPos = s->GetHeadPos();
-				playerHeadPos = playerSnake->GetHeadPos();
-
-				//Player VS AI, player collides with ai
-				if (s->PlayerCollision(playerHeadPos))
+				if (!s->DeadCheck())
 				{
-					playerSnakeScore = playerSnake->GetScore();
-					currentState = gameState::gameOver;
-				}
+					aiHeadPos = s->GetHeadPos();
+					playerHeadPos = playerSnake->GetHeadPos();
 
-				// AI VS PLAYER, ai collides with player
-				if (playerSnake->AICollision(aiHeadPos))
-				{
-					std::cout << "AI COLLISION WITH PLAYER" << std::endl;
-					s->Dead();
-					//delete s;
-					playerSnake->ResetCollision();
-					break;
-				}
-
-				// AI VS AI, ai collides with ai
-				for (AISnake *ss : aiSnakes) // Compares to second snake
-				{
-					if (!ss->DeadCheck())
+					//Player VS AI, player collides with ai
+					if (s->PlayerCollision(playerHeadPos))
 					{
-						if (ss != s) // Stops it from comparing to itself
-						{
-							aiHeadPos = ss->GetHeadPos();
+						playerSnakeScore = playerSnake->GetScore();
+						currentState = gameState::gameOver;
+					}
 
-							if (s->AICollision(aiHeadPos))
+					// AI VS PLAYER, ai collides with player
+					if (playerSnake->AICollision(aiHeadPos))
+					{
+						std::cout << "AI COLLISION WITH PLAYER" << std::endl;
+						s->Dead();
+						//delete s;
+						playerSnake->ResetCollision();
+						break;
+					}
+
+					// AI VS AI, ai collides with ai
+					for (AISnake* ss : aiSnakes) // Compares to second snake
+					{
+						if (!ss->DeadCheck())
+						{
+							if (ss != s) // Stops it from comparing to itself
 							{
-								std::cout << "AI COLLISION" << std::endl;
-								ss->Dead();  // CAUSES DEBUG ASSERTION FAILURE
-								//delete ss;
-								break;
+								aiHeadPos = ss->GetHeadPos();
+
+								if (s->AICollision(aiHeadPos))
+								{
+									std::cout << "AI COLLISION" << std::endl;
+									ss->Dead();  // CAUSES DEBUG ASSERTION FAILURE
+									//delete ss;
+									break;
+								}
 							}
 						}
 					}
 				}
 			}
-		}
 
-		// AI Pathfinding
-		for (AISnake *s : aiSnakes)
-		{
-			for (Collectable *c : collectableItems)
+			// AI Pathfinding
+			for (AISnake* s : aiSnakes)
 			{
-				// Gets distance between AI and collectable			
-				xDistance = s->GetScreenPos().x - c->GetScreenPos().x;
-				if (xDistance < 0)
+				for (Collectable* c : collectableItems)
 				{
-					xDistance = -xDistance;
+					// Gets distance between AI and collectable			
+					xDistance = s->GetScreenPos().x - c->GetScreenPos().x;
+					if (xDistance < 0)
+					{
+						xDistance = -xDistance;
+					}
+					yDistance = s->GetScreenPos().y - c->GetScreenPos().y;
+					if (yDistance < 0)
+					{
+						yDistance = -yDistance;
+					}
+					distance = xDistance * 2 + yDistance * 2;
+					s->CollectableDistance(distance);
 				}
-				yDistance = s->GetScreenPos().y - c->GetScreenPos().y;
-				if (yDistance < 0)
-				{
-					yDistance = -yDistance;
-				}
-				distance = xDistance * 2 + yDistance * 2;
-				s->CollectableDistance(distance);
 			}
-		}
 
-		// Checks if player is above water or not
-		if (playerSnake->GetScreenPos().y < water->GetScreenPos().y)
-		{
-			playerSnake->AboveWater(screenWidth);
-		}
-		else
-		{
-			playerSnake->BelowWater();
-		}
-
-		// Checks if player is more than one above water level
-		if (playerSnake->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
-		{
-			playerSnake->Floating();
-		}
-
-		// Checks if ai is above water or not
-		for (AISnake *s : aiSnakes)
-		{
-			if (s->GetScreenPos().y < water->GetScreenPos().y)
+			// Checks if player is above water or not
+			if (playerSnake->GetScreenPos().y < water->GetScreenPos().y)
 			{
-				s->AboveWater(screenWidth);
+				playerSnake->AboveWater(screenWidth);
 			}
 			else
 			{
-				s->BelowWater();
+				playerSnake->BelowWater();
 			}
 
-			// Checks if ai is more than one above water level
-			if (s->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
+			// Checks if player is more than one above water level
+			if (playerSnake->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
 			{
-				s->Floating();
+				playerSnake->Floating();
 			}
-		}
 
-		int airIndex = 0;
-		for (AISnake *snake : aiSnakes)
-		{
-			if (!snake->DeadCheck())
+			// Checks if ai is above water or not
+			for (AISnake* s : aiSnakes)
 			{
-				if (!snake->GetDrowning())
+				if (s->GetScreenPos().y < water->GetScreenPos().y)
 				{
-					airLeft = 100 - snake->GetMovementSteps();
-					DisplayAIAir(window, airPos[airIndex], color[airIndex]);
+					s->AboveWater(screenWidth);
+				}
+				else
+				{
+					s->BelowWater();
+				}
+
+				// Checks if ai is more than one above water level
+				if (s->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
+				{
+					s->Floating();
 				}
 			}
-			airIndex++;
-		}
 
-		// Lowers water level
-		if (waterLeak >= 20)
-		{
-			water->Leak();
-			waterLeak = 0;
-		}
-		waterLeak++;
+			int airIndex = 0;
+			for (AISnake* snake : aiSnakes)
+			{
+				if (!snake->DeadCheck())
+				{
+					if (!snake->GetDrowning())
+					{
+						airLeft = 100 - snake->GetMovementSteps();
+						DisplayAIAir(window, airPos[airIndex], color[airIndex]);
+					}
+				}
+				airIndex++;
+			}
 
-		if (playerSnake->DeadCheck())
-		{
-			playerSnakeScore = playerSnake->GetScore();
-			currentState = gameState::gameOver;
-		}
+			// Lowers water level
+			if (waterLeak >= 20)
+			{
+				water->Leak();
+				waterLeak = 0;
+			}
+			waterLeak++;
 
-		if (water->GetScreenPos().y >= screenHeight)
+			if (playerSnake->DeadCheck())
+			{
+				playerSnakeScore = playerSnake->GetScore();
+				currentState = gameState::gameOver;
+			}
+
+			if (water->GetScreenPos().y >= screenHeight)
+			{
+				currentState = gameState::gameOver;
+			}
+		}
+		else
 		{
-			currentState = gameState::gameOver;
+			// Paused
+			pause->Render(window);
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) // Quit - Return to Menu
+			{
+				currentState = gameState::restart;
+			}
 		}
 
 		window.display();
@@ -909,7 +953,7 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 
 		// End game checks
 		allAIDead = true;
-		for (AISnake *s : aiSnakes)
+		for (AISnake* s : aiSnakes)
 		{
 			if (!s->DeadCheck())
 			{
@@ -925,18 +969,18 @@ void Game::AIRun(sf::RenderWindow& window, const int &screenWidth, const int &sc
 	}
 
 	delete playerSnake;
-	for (AISnake *s : aiSnakes)
+	for (AISnake* s : aiSnakes)
 	{
 		delete s;
 	}
 	delete water;
-	for (Collectable *c : collectableItems)
+	for (Collectable* c : collectableItems)
 	{
 		delete c;
 	}
 }
 
-void Game::DisplayAIAir(sf::RenderWindow& window, sf::Vector2f &airPos, sf::Color &color)
+void Game::DisplayAIAir(sf::RenderWindow & window, sf::Vector2f & airPos, sf::Color & color)
 {
 	sf::Font font;
 	if (!font.loadFromFile("ka1.ttf"))
