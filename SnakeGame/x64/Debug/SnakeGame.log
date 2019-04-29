@@ -1,0 +1,32 @@
+﻿  Game.cpp
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.h(54): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(114): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(122): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(128): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(135): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(141): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(146): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(151): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(518): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(528): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(529): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(534): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(666): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(676): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(677): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(682): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(692): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(693): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(698): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(857): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(862): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\SnakeGame\Game.cpp(914): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  SnakeGame.vcxproj -> F:\New folder\franp\Documents\UNI WORK\C++\SnakeICA\x64\Debug\SnakeGame.exe
