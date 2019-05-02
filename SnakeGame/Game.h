@@ -22,11 +22,7 @@ class Game
 protected:
 	gameState currentState = gameState::playerSelect;
 
-	// High score
-	int highScore;
-	std::ofstream output;
-	std::ifstream input;
-
+	int playerSnakeScore = 0;
 
 	bool isRestarting = false;
 	bool gameStarting = false;
@@ -64,9 +60,7 @@ protected:
 	// AI Snake Pathfinding values
 	int xDistance = 0;
 	int yDistance = 0;
-	int distance = 0;
-
-	int playerSnakeScore = 0;	
+	int distance = 0; 		
 
 public:
 	Game();

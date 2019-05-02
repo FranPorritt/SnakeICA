@@ -10,7 +10,5 @@ protected:
 public:
 	MenuSnake(sf::Vector2f screenPosArg, sf::Color colorArg, float radiusArg);
 	~MenuSnake();
-
-	void Wiggle();
 };
 

@@ -4,6 +4,7 @@
 #include "AISnake.h"
 #include "MenuSnake.h"
 #include "Pause.h"
+#include "UI.h"
 #include <iostream>
 
 Game::Game()
@@ -56,6 +57,8 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int& screenWidth, 
 		std::cout << "ERROR" << std::endl;
 	}
 
+	UI* ui = new UI();
+
 	sf::Vector2f playerSnakePos = { 440, 440 };
 	for (int snakeIndex = 0; snakeIndex < 7; snakeIndex++)
 	{
@@ -107,35 +110,13 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int& screenWidth, 
 		clock.restart();
 
 		water->Render(window);
-
-		sf::Text titleText;
-		titleText.setFont(font);
-		titleText.setCharacterSize(75);
-		titleText.setPosition(screenWidth / 2, screenHeight / 6);
-		titleText.setString("SNAKE");
-		titleText.setFillColor(sf::Color::Green);
-		titleText.setOrigin(floor(titleText.getLocalBounds().width / 2), floor(titleText.getLocalBounds().height / 2));
-
-		sf::Text singleText;
-		singleText.setFont(font);
-		singleText.setCharacterSize(30);
-		singleText.setPosition(screenWidth / 4, 350);
-		singleText.setString("SINGLE \n PLAYER");
-		singleText.setFillColor(sf::Color::Red);
-		singleText.setOrigin(floor(singleText.getLocalBounds().width / 2), floor(singleText.getLocalBounds().height / 2));
+		ui->Menu(window, screenWidth, screenHeight);
 
 		sf::RectangleShape singleSelect({ 180.0f, 5.0f });
 		singleSelect.setPosition(screenWidth / 4, 400);
 		singleSelect.setFillColor(sf::Color::Red);
 		singleSelect.setOrigin(floor(singleSelect.getLocalBounds().width / 2), floor(singleSelect.getLocalBounds().height / 2));
 
-		sf::Text aiText;
-		aiText.setFont(font);
-		aiText.setCharacterSize(30);
-		aiText.setPosition(screenWidth * 0.75, 350);
-		aiText.setString("PLAYER \n VS AI \n 1 \t 2 \t 3");
-		aiText.setFillColor(sf::Color::Red);
-		aiText.setOrigin(floor(aiText.getLocalBounds().width / 2), floor(aiText.getLocalBounds().height / 2));
 
 		sf::RectangleShape oneSelect({ 40.0f, 5.0f });
 		oneSelect.setPosition(screenWidth * 0.75 - 70, 420);
@@ -152,28 +133,6 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int& screenWidth, 
 		threeSelect.setFillColor(sf::Color::Red);
 		threeSelect.setOrigin(floor(threeSelect.getLocalBounds().width / 2), floor(threeSelect.getLocalBounds().height / 2));
 
-		sf::Text startText;
-		startText.setFont(font);
-		startText.setCharacterSize(25);
-		startText.setPosition(500, 650);
-		startText.setString("PRESS SPACE TO START");
-		startText.setFillColor(sf::Color::Red);
-		startText.setOrigin(floor(startText.getLocalBounds().width / 2), floor(startText.getLocalBounds().height / 2));
-
-		sf::Text quitText;
-		quitText.setFont(font);
-		quitText.setCharacterSize(25);
-		quitText.setPosition(500, 700);
-		quitText.setString("PRESS Q TO QUIT");
-		quitText.setFillColor(sf::Color::Red);
-		quitText.setOrigin(floor(quitText.getLocalBounds().width / 2), floor(quitText.getLocalBounds().height / 2));
-
-		window.draw(titleText);
-		window.draw(singleText);
-		window.draw(aiText);
-		window.draw(startText);
-		window.draw(quitText);
-
 		switch (currentSelection)
 		{
 		case 0:
@@ -181,7 +140,6 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int& screenWidth, 
 
 			for (MenuSnake* ssb : playerSnakeBody)
 			{
-				ssb->Wiggle();
 				ssb->Render(window);
 			}
 
@@ -270,7 +228,6 @@ void Game::PlayerSelectScreen(sf::RenderWindow& window, const int& screenWidth, 
 			break;
 		}
 
-		wiggleCount++;
 		water->MenuLeak();
 
 		// if right button, increase array unless end vice versa, if array num display that line ect
@@ -302,6 +259,8 @@ void Game::GameOverScreen(sf::RenderWindow& window)
 		std::cout << "ERROR" << std::endl;
 	}
 
+	UI* ui = new UI();
+
 	while ((window.isOpen()) && (currentState == gameState::gameOver))
 	{
 		sf::Event event;
@@ -318,71 +277,10 @@ void Game::GameOverScreen(sf::RenderWindow& window)
 			}
 		}
 
-		sf::Text gameOverText;
-		gameOverText.setFont(font);
-		gameOverText.setCharacterSize(85);
-		gameOverText.setPosition(500, 100);
-		gameOverText.setString("GAME OVER");
-		gameOverText.setFillColor(sf::Color::Red);
-		gameOverText.setOrigin(floor(gameOverText.getLocalBounds().width / 2), floor(gameOverText.getLocalBounds().height / 2));
+		ui->GameOver(window);
+		ui->GameEnd(window, playerSnakeScore);
+		ui->HighScore(window, playerSnakeScore);
 
-		sf::Text scoreText;
-		scoreText.setFont(font);
-		scoreText.setCharacterSize(50);
-		scoreText.setPosition(500, 250);
-		scoreText.setString("SCORE: " + std::to_string(playerSnakeScore));
-		scoreText.setFillColor(sf::Color::Red);
-		scoreText.setOrigin(floor(scoreText.getLocalBounds().width / 2), floor(scoreText.getLocalBounds().height / 2));
-
-		sf::Text restartText;
-		restartText.setFont(font);
-		restartText.setCharacterSize(35);
-		restartText.setPosition(500, 600);
-		restartText.setString("PRESS SPACE TO RESTART");
-		restartText.setFillColor(sf::Color::Red);
-		restartText.setOrigin(floor(restartText.getLocalBounds().width / 2), floor(restartText.getLocalBounds().height / 2));
-
-		sf::Text quitText;
-		quitText.setFont(font);
-		quitText.setCharacterSize(35);
-		quitText.setPosition(500, 700);
-		quitText.setString("PRESS Q TO QUIT");
-		quitText.setFillColor(sf::Color::Red);
-		quitText.setOrigin(floor(quitText.getLocalBounds().width / 2), floor(quitText.getLocalBounds().height / 2));
-
-		window.draw(gameOverText);
-		window.draw(scoreText);
-		window.draw(restartText);
-		window.draw(quitText);
-
-		input.open("highScore.txt.");
-		if (output.fail())
-		{
-			std::cerr << "Could not open file for write" << std::endl;
-		}
-		input >> highScore;
-		input.close();
-
-		if (highScore < playerSnakeScore)
-		{
-			output.open("highScore.txt");
-			if (output.fail())
-			{
-				std::cerr << "Could not open file for write" << std::endl;
-			}
-			output << playerSnakeScore << std::endl;
-			output.close();
-		}
-
-		sf::Text highScoreText;
-		highScoreText.setFont(font);
-		highScoreText.setCharacterSize(50);
-		highScoreText.setPosition(500, 350);
-		highScoreText.setString("HIGH SCORE: " + std::to_string(highScore));
-		highScoreText.setFillColor(sf::Color::Red);
-		highScoreText.setOrigin(floor(highScoreText.getLocalBounds().width / 2), floor(highScoreText.getLocalBounds().height / 2));
-
-		window.draw(highScoreText);
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
@@ -407,6 +305,8 @@ void Game::GameWonScreen(sf::RenderWindow& window)
 		std::cout << "ERROR" << std::endl;
 	}
 
+	UI* ui = new UI();
+
 	while ((window.isOpen()) && (currentState == gameState::gameWon))
 	{
 		sf::Event event;
@@ -423,71 +323,9 @@ void Game::GameWonScreen(sf::RenderWindow& window)
 			}
 		}
 
-		sf::Text gameWonText;
-		gameWonText.setFont(font);
-		gameWonText.setCharacterSize(85);
-		gameWonText.setPosition(500, 100);
-		gameWonText.setString("GAME WON");
-		gameWonText.setFillColor(sf::Color::Red);
-		gameWonText.setOrigin(floor(gameWonText.getLocalBounds().width / 2), floor(gameWonText.getLocalBounds().height / 2));
-
-		sf::Text scoreText;
-		scoreText.setFont(font);
-		scoreText.setCharacterSize(50);
-		scoreText.setPosition(500, 250);
-		scoreText.setString("SCORE: " + std::to_string(playerSnakeScore));
-		scoreText.setFillColor(sf::Color::Red);
-		scoreText.setOrigin(floor(scoreText.getLocalBounds().width / 2), floor(scoreText.getLocalBounds().height / 2));
-
-		sf::Text restartText;
-		restartText.setFont(font);
-		restartText.setCharacterSize(35);
-		restartText.setPosition(500, 600);
-		restartText.setString("PRESS SPACE TO RESTART");
-		restartText.setFillColor(sf::Color::Red);
-		restartText.setOrigin(floor(restartText.getLocalBounds().width / 2), floor(restartText.getLocalBounds().height / 2));
-
-		sf::Text quitText;
-		quitText.setFont(font);
-		quitText.setCharacterSize(35);
-		quitText.setPosition(500, 700);
-		quitText.setString("PRESS Q TO QUIT");
-		quitText.setFillColor(sf::Color::Red);
-		quitText.setOrigin(floor(quitText.getLocalBounds().width / 2), floor(quitText.getLocalBounds().height / 2));
-
-		window.draw(gameWonText);
-		window.draw(scoreText);
-		window.draw(restartText);
-		window.draw(quitText);
-
-		input.open("highScore.txt.");
-		if (output.fail())
-		{
-			std::cerr << "Could not open file for write" << std::endl;
-		}
-		input >> highScore;
-		input.close();
-
-		if (highScore < playerSnakeScore)
-		{
-			output.open("highScore.txt");
-			if (output.fail())
-			{
-				std::cerr << "Could not open file for write" << std::endl;
-			}
-			output << playerSnakeScore << std::endl;
-			output.close();
-		}
-
-		sf::Text highScoreText;
-		highScoreText.setFont(font);
-		highScoreText.setCharacterSize(50);
-		highScoreText.setPosition(500, 350);
-		highScoreText.setString("HIGH SCORE: " + std::to_string(highScore));
-		highScoreText.setFillColor(sf::Color::Red);
-		highScoreText.setOrigin(floor(highScoreText.getLocalBounds().width / 2), floor(highScoreText.getLocalBounds().height / 2));
-
-		window.draw(highScoreText);
+		ui->GameEnd(window, playerSnakeScore);
+		ui->GameWon(window);
+		ui->HighScore(window, playerSnakeScore);
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
@@ -741,13 +579,13 @@ void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& s
 			playerSnake->Move();
 			playerSnake->Update(screenWidth, screenHeight, window, waterScreenPos);
 
-			for (AISnake* s : aiSnakes)
+			for (AISnake* ai : aiSnakes)
 			{
-				if (!s->DeadCheck())
+				if (!ai->DeadCheck())
 				{
-					s->Move();
-					s->Update(screenWidth, screenHeight, window, waterScreenPos, collectableItems);
-					s->Pathfinding(collectableItems); // Determines which collectable is closest
+					ai->Move();
+					ai->Update(screenWidth, screenHeight, window, waterScreenPos, collectableItems);
+					ai->Pathfinding(collectableItems); // Determines which collectable is closest
 				}
 			}
 
@@ -778,22 +616,22 @@ void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& s
 				}
 
 				// AI COLLECTABLE CHECKS
-				for (AISnake* s : aiSnakes)
+				for (AISnake* ai : aiSnakes)
 				{
 					// Checks for collisions with ai
-					if (c->GetScreenPos() == s->GetScreenPos())
+					if (c->GetScreenPos() == ai->GetScreenPos())
 					{
 						if (c->GetWhiteBonus())
 						{
-							s->GrowWhiteBonusTail();
+							ai->GrowWhiteBonusTail();
 						}
 						else if (c->GetPurpleBonus())
 						{
-							s->GrowPurpleBonusTail();
+							ai->GrowPurpleBonusTail();
 						}
 						else
 						{
-							s->GrowTail();
+							ai->GrowTail();
 						}
 						c->PickedUp(*water, screenHeight);
 						std::cout << "AI PICKED UP" << std::endl;
@@ -802,15 +640,15 @@ void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& s
 			}
 
 			// Snake Vs Snake Collisions
-			for (AISnake* s : aiSnakes)
+			for (AISnake* ai : aiSnakes)
 			{
-				if (!s->DeadCheck())
+				if (!ai->DeadCheck())
 				{
-					aiHeadPos = s->GetHeadPos();
+					aiHeadPos = ai->GetHeadPos();
 					playerHeadPos = playerSnake->GetHeadPos();
 
 					//Player VS AI, player collides with ai
-					if (s->PlayerCollision(playerHeadPos))
+					if (ai->PlayerCollision(playerHeadPos))
 					{
 						playerSnakeScore = playerSnake->GetScore();
 						currentState = gameState::gameOver;
@@ -820,26 +658,24 @@ void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& s
 					if (playerSnake->AICollision(aiHeadPos))
 					{
 						std::cout << "AI COLLISION WITH PLAYER" << std::endl;
-						s->Dead();
-						//delete s;
+						ai->Dead();
 						playerSnake->ResetCollision();
 						break;
 					}
 
 					// AI VS AI, ai collides with ai
-					for (AISnake* ss : aiSnakes) // Compares to second snake
+					for (AISnake* secondAI : aiSnakes) // Compares to second snake
 					{
-						if (!ss->DeadCheck())
+						if (!secondAI->DeadCheck())
 						{
-							if (ss != s) // Stops it from comparing to itself
+							if (secondAI != ai) // Stops it from comparing to itself
 							{
-								aiHeadPos = ss->GetHeadPos();
+								aiHeadPos = secondAI->GetHeadPos();
 
-								if (s->AICollision(aiHeadPos))
+								if (ai->AICollision(aiHeadPos))
 								{
 									std::cout << "AI COLLISION" << std::endl;
-									ss->Dead();  // CAUSES DEBUG ASSERTION FAILURE
-									//delete ss;
+									secondAI->Dead();  
 									break;
 								}
 							}
@@ -849,23 +685,23 @@ void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& s
 			}
 
 			// AI Pathfinding
-			for (AISnake* s : aiSnakes)
+			for (AISnake* ai : aiSnakes)
 			{
 				for (Collectable* c : collectableItems)
 				{
 					// Gets distance between AI and collectable			
-					xDistance = s->GetScreenPos().x - c->GetScreenPos().x;
+					xDistance = ai->GetScreenPos().x - c->GetScreenPos().x;
 					if (xDistance < 0)
 					{
 						xDistance = -xDistance;
 					}
-					yDistance = s->GetScreenPos().y - c->GetScreenPos().y;
+					yDistance = ai->GetScreenPos().y - c->GetScreenPos().y;
 					if (yDistance < 0)
 					{
 						yDistance = -yDistance;
 					}
 					distance = xDistance * 2 + yDistance * 2;
-					s->CollectableDistance(distance);
+					ai->CollectableDistance(distance);
 				}
 			}
 
@@ -886,32 +722,32 @@ void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& s
 			}
 
 			// Checks if ai is above water or not
-			for (AISnake* s : aiSnakes)
+			for (AISnake* ai : aiSnakes)
 			{
-				if (s->GetScreenPos().y < water->GetScreenPos().y)
+				if (ai->GetScreenPos().y < water->GetScreenPos().y)
 				{
-					s->AboveWater(screenWidth);
+					ai->AboveWater(screenWidth);
 				}
 				else
 				{
-					s->BelowWater();
+					ai->BelowWater();
 				}
 
 				// Checks if ai is more than one above water level
-				if (s->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
+				if (ai->GetScreenPos().y < water->GetScreenPos().y - 20.0f)
 				{
-					s->Floating();
+					ai->Floating();
 				}
 			}
 
 			int airIndex = 0;
-			for (AISnake* snake : aiSnakes)
+			for (AISnake* ai : aiSnakes)
 			{
-				if (!snake->DeadCheck())
+				if (!ai->DeadCheck())
 				{
-					if (!snake->GetDrowning())
+					if (!ai->GetDrowning())
 					{
-						airLeft = 100 - snake->GetMovementSteps();
+						airLeft = 100 - ai->GetMovementSteps();
 						DisplayAIAir(window, airPos[airIndex], color[airIndex]);
 					}
 				}
@@ -937,7 +773,7 @@ void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& s
 				currentState = gameState::gameOver;
 			}
 		}
-		else
+		else  //isPaused
 		{
 			// Paused
 			pause->Render(window);
@@ -953,9 +789,9 @@ void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& s
 
 		// End game checks
 		allAIDead = true;
-		for (AISnake* s : aiSnakes)
+		for (AISnake* ai : aiSnakes)
 		{
-			if (!s->DeadCheck())
+			if (!ai->DeadCheck())
 			{
 				allAIDead = false;
 			}
@@ -969,9 +805,9 @@ void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& s
 	}
 
 	delete playerSnake;
-	for (AISnake* s : aiSnakes)
+	for (AISnake* ai : aiSnakes)
 	{
-		delete s;
+		delete ai;
 	}
 	delete water;
 	for (Collectable* c : collectableItems)

@@ -41,7 +41,9 @@ public:
 	// Sets direction based on x position
 	void AboveWater(const int &screenWidth) override;
 	void BelowWater() override;
+	// Sets direction North
 	void GoForAir();
+	// Checks if drowning
 	bool GetDrowning();
 	int GetMovementSteps();
 	bool PlayerCollision(sf::Vector2f& playerHeadPos);

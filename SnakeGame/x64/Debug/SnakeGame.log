@@ -1,0 +1,5 @@
+﻿  UI.cpp
+c:\users\v8078659\source\snakeica\snakegame\ui.cpp(130): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\v8078659\source\snakeica\snakegame\ui.cpp(137): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\v8078659\source\snakeica\snakegame\ui.cpp(144): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  SnakeGame.vcxproj -> C:\Users\v8078659\Source\SnakeICA\x64\Debug\SnakeGame.exe

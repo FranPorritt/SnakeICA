@@ -51,6 +51,7 @@ void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 {
 	for (int distanceIndex = 0; distanceIndex < AICollectableDistance.size(); distanceIndex++)
 	{
+		// Determines closest collectable
 		if (AICollectableDistance[distanceIndex] < closestValue)
 		{
 			fifthClosestValue = fourthClosestValue;
