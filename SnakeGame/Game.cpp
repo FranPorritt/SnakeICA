@@ -479,7 +479,6 @@ void Game::Run(sf::RenderWindow& window, const int& screenWidth, const int& scre
 		{
 			// Paused
 			pause->Render(window);
-
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) // Quit - Return to Menu
 			{
 				currentState = gameState::restart;
