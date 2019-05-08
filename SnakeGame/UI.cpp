@@ -132,6 +132,7 @@ void UI::Menu(sf::RenderWindow& window, const int &screenWidth, const int &scree
 	titleText.setFillColor(sf::Color::Green);
 	titleText.setOrigin(floor(titleText.getLocalBounds().width / 2), floor(titleText.getLocalBounds().height / 2));
 
+	// Single Player Text
 	singleText.setFont(font);
 	singleText.setCharacterSize(30);
 	singleText.setPosition(screenWidth / 4, 350);
@@ -139,6 +140,7 @@ void UI::Menu(sf::RenderWindow& window, const int &screenWidth, const int &scree
 	singleText.setFillColor(fontColor);
 	singleText.setOrigin(floor(singleText.getLocalBounds().width / 2), floor(singleText.getLocalBounds().height / 2));
 
+	// Player VS AI Text
 	aiText.setFont(font);
 	aiText.setCharacterSize(30);
 	aiText.setPosition(screenWidth * 0.75, 350);
@@ -146,6 +148,7 @@ void UI::Menu(sf::RenderWindow& window, const int &screenWidth, const int &scree
 	aiText.setFillColor(fontColor);
 	aiText.setOrigin(floor(aiText.getLocalBounds().width / 2), floor(aiText.getLocalBounds().height / 2));
 
+	// Start Text
 	startText.setFont(font);
 	startText.setCharacterSize(25);
 	startText.setPosition(500, 650);
@@ -153,6 +156,7 @@ void UI::Menu(sf::RenderWindow& window, const int &screenWidth, const int &scree
 	startText.setFillColor(fontColor);
 	startText.setOrigin(floor(startText.getLocalBounds().width / 2), floor(startText.getLocalBounds().height / 2));
 
+	// Quit text
 	quitMenuText.setFont(font);
 	quitMenuText.setCharacterSize(25);
 	quitMenuText.setPosition(500, 700);
@@ -160,6 +164,8 @@ void UI::Menu(sf::RenderWindow& window, const int &screenWidth, const int &scree
 	quitMenuText.setFillColor(fontColor);
 	quitMenuText.setOrigin(floor(quitMenuText.getLocalBounds().width / 2), floor(quitMenuText.getLocalBounds().height / 2));
 
+
+	// Render
 	window.draw(titleText);
 	window.draw(singleText);
 	window.draw(aiText);

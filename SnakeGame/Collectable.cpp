@@ -31,11 +31,13 @@ Collectable::~Collectable()
 {
 }
 
+// Checks if collectable is active
 bool Collectable::Alive()
 {
 	return aliveFlag;
 }
 
+// Determines if a collectable is active or not
 void Collectable::AliveCheck()
 {
 	if (rand() % aliveCheckTime == 0)

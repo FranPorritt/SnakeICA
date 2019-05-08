@@ -22,7 +22,6 @@ int main()
 	const int screenHeight = 760;
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "C++ Snake ICA : V8078659");
 
-    // We can still output to the console window
     std::cout << "SnakeGame: Starting" << std::endl;
 
 	Game* snakeGame = new Game();
@@ -47,6 +46,7 @@ int main()
 
 		if (snakeGame->GetRestart())
 		{		
+			// Restarts game
 			snakeGame = new Game();
 		}
 	}
