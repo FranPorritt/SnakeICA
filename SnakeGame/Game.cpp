@@ -277,6 +277,7 @@ void Game::GameOverScreen(sf::RenderWindow& window)
 			}
 		}
 
+		// Displays text
 		ui->GameOver(window);
 		ui->GameEnd(window, playerSnakeScore);
 		ui->HighScore(window, playerSnakeScore);
@@ -323,6 +324,7 @@ void Game::GameWonScreen(sf::RenderWindow& window)
 			}
 		}
 
+		// Displays text
 		ui->GameEnd(window, playerSnakeScore);
 		ui->GameWon(window);
 		ui->HighScore(window, playerSnakeScore);
