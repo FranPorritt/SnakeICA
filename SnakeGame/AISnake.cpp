@@ -15,19 +15,19 @@ void AISnake::Move()
 	switch (direction)
 	{
 	case EDirection::eNorth:
-		screenPos.y -= radius * 2;
+		screenPos.y -= diameter;
 		break;
 
 	case EDirection::eSouth:
-		screenPos.y += radius * 2;
+		screenPos.y += diameter;
 		break;
 
 	case EDirection::eEast:
-		screenPos.x += radius * 2;
+		screenPos.x += diameter;
 		break;
 
 	case EDirection::eWest:
-		screenPos.x -= radius * 2;
+		screenPos.x -= diameter;
 		break;
 
 	case EDirection::eStop:
@@ -93,12 +93,12 @@ void AISnake::Pathfinding(std::vector<Collectable*>& collectableItems)
 		AITargetCollectable = SetRandomDestination();
 	}
 	// Gets x and y distances and makes them positive if negative
-	xTargetDistance = GetScreenPos().x - AITargetCollectable.x;
+	xTargetDistance = (int)GetScreenPos().x - (int)AITargetCollectable.x;
 	if (xTargetDistance < 0)
 	{
 		xTargetDistance = -xTargetDistance;
 	}
-	yTargetDistance = GetScreenPos().y - AITargetCollectable.y;
+	yTargetDistance = (int)GetScreenPos().y - (int)AITargetCollectable.y;
 	if (yTargetDistance < 0)
 	{
 		yTargetDistance = -yTargetDistance;
@@ -146,11 +146,11 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 	AICollectableDistance.clear();
 
 	//Checks if snake collides with window edges
-	if (screenPos.x < 0 || screenPos.x > screenWidth - radius * 2)
+	if (screenPos.x < 0 || screenPos.x > screenWidth - diameter)
 	{
 		isDead = true;
 	}
-	if (screenPos.y < 0 || screenPos.y > screenHeight - radius * 2)
+	if (screenPos.y < 0 || screenPos.y > screenHeight - diameter)
 	{
 		isDead = true;
 	}
@@ -174,7 +174,7 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 		}
 	}
 
-	if (screenPos.x == screenWidth - radius * 2) // East edge
+	if (screenPos.x == screenWidth - diameter) // East edge
 	{
 		if (direction == EDirection::eEast) //Heading towards edge
 		{
@@ -192,7 +192,7 @@ void AISnake::Update(const int &screenWidth, const int &screenHeight, sf::Render
 		}
 	}
 
-	if (screenPos.y == screenHeight - radius * 2) // South Edge
+	if (screenPos.y == screenHeight - diameter) // South Edge
 	{
 		if (direction == EDirection::eSouth) //Heading towards edge
 		{
@@ -358,8 +358,8 @@ void AISnake::CollectableWest()
 
 sf::Vector2f AISnake::SetRandomDestination()
 {
-	float x = rand() % 1000;
-	float y = rand() % 750;
+	const float x = (float)(rand() % 1000);
+	const float y = (float)(rand() % 750);
 
 	sf::Vector2f randomDestination = { x,y };
 

@@ -19,12 +19,12 @@ void Water::Render(sf::RenderWindow& window)
 
 void Water::Leak()
 {
-	waterScreenPos.y += 20.0f;
+	waterScreenPos.y += leakRate;
 }
 
 void Water::MenuLeak()
 {
-	waterScreenPos.y += 0.5f;
+	waterScreenPos.y += menuLeakRate;
 }
 
 void Water::MenuPos()

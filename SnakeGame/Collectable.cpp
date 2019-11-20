@@ -71,7 +71,7 @@ void Collectable::Render(sf::RenderWindow& window, const int &screenWidth, const
 
 sf::Vector2f Collectable::NewScreenPos(sf::Vector2f &screenPos, Water& water, const int &screenHeight)
 {
-	float x = (rand() % 50) * 20; // FIX MAGIC NUMBERS
+	const float x = (rand() % 50) * 20; // FIX MAGIC NUMBERS
 	float y = (rand() % 36) * 20;
 
 	// Checks collectable doesn't spawn above water

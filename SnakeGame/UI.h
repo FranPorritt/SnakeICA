@@ -25,7 +25,7 @@ protected:
 
 	sf::Color fontColor = sf::Color::Red;
 
-	int highScore;
+	int highScore = 0;
 	std::ofstream output;
 	std::ifstream input;
 

@@ -3,6 +3,7 @@
 
 UI::UI()
 {
+	highScore = 0;
 }
 
 UI::~UI()
@@ -15,6 +16,7 @@ void UI::GameEnd(sf::RenderWindow& window, int& playerSnakeScore)
 	{
 		std::cout << "ERROR" << std::endl;
 	}
+
 	// Score Text
 	scoreText.setFont(font);
 	scoreText.setCharacterSize(50);
@@ -163,8 +165,7 @@ void UI::Menu(sf::RenderWindow& window, const int &screenWidth, const int &scree
 	quitMenuText.setString("PRESS Q TO QUIT");
 	quitMenuText.setFillColor(fontColor);
 	quitMenuText.setOrigin(floor(quitMenuText.getLocalBounds().width / 2), floor(quitMenuText.getLocalBounds().height / 2));
-
-
+	
 	// Render
 	window.draw(titleText);
 	window.draw(singleText);

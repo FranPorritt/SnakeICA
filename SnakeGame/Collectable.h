@@ -7,7 +7,7 @@ class Collectable
 protected:
 	sf::Vector2f screenPos;
 	sf::Color color;
-	float radius;
+	float radius = 0;
 
 	int aliveCheckTime = 4;
 	bool aliveFlag = false;

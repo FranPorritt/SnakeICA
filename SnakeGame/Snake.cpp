@@ -64,19 +64,19 @@ void Snake::Move()
 	switch (direction)
 	{
 	case EDirection::eNorth:
-		screenPos.y -= radius * 2;
+		screenPos.y -= diameter;
 		break;
 
 	case EDirection::eSouth:
-		screenPos.y += radius * 2;
+		screenPos.y += diameter;
 		break;
 
 	case EDirection::eEast:
-		screenPos.x += radius * 2;
+		screenPos.x += diameter;
 		break;
 
 	case EDirection::eWest:
-		screenPos.x -= radius * 2;
+		screenPos.x -= diameter;
 		break;
 
 	case EDirection::eStop:
@@ -97,11 +97,11 @@ void Snake::Update(const int &screenWidth, const int &screenHeight, sf::RenderWi
 	score = SegmentList.size() - 1;
 
 	//Checks if snake collides with window edges
-	if (screenPos.x < 0 || screenPos.x > screenWidth - radius * 2)
+	if (screenPos.x < 0 || screenPos.x > screenWidth - diameter)
 	{
 		isDead = true;
 	}
-	if (screenPos.y < 0 || screenPos.y > screenHeight - radius * 2)
+	if (screenPos.y < 0 || screenPos.y > screenHeight - diameter)
 	{
 		isDead = true;
 	}
@@ -175,7 +175,7 @@ void Snake::BelowWater()
 
 void Snake::Floating()
 {
-	screenPos.y += radius * 2;
+	screenPos.y += diameter;
 }
 
 void Snake::GrowTail()
@@ -243,7 +243,7 @@ int Snake::GetScore()
 
 void Snake::DisplayAir(sf::RenderWindow & window)
 {
-	float airLeft = (100 - movementSteps) * 2;
+	const float airLeft = (100 - movementSteps) * 2;
 
 	sf::Font font;
 	if (!font.loadFromFile("ka1.ttf"))

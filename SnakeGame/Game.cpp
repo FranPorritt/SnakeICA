@@ -365,13 +365,13 @@ void Game::Run(sf::RenderWindow& window, const int& screenWidth, const int& scre
 	for (int collectableIndex = 0; collectableIndex < maxActiveCollectables; collectableIndex++)
 	{
 		// Finds random screen position
-		float x = (rand() % 50) * 20;
+		const float x = (rand() % 50) * 20;
 		float y = (rand() % 36) * 20;
 
 		// Checks collectable doesn't spawn above water
 		if (y < water->GetScreenPos().y || y >= screenHeight)
 		{
-			float y = (rand() % 36 + 1) * 20;
+			y = (rand() % 36 + 1) * 20;
 		}
 
 		collectableItems.push_back(new Collectable({ x,y }, 10.0f));
@@ -512,7 +512,7 @@ void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& s
 	for (int aiSnakesIndex = 0; aiSnakesIndex < aiPlayers; aiSnakesIndex++)
 	{
 		// Finds random screen position
-		float x = (rand() % 50) * 20;
+		const float x = (rand() % 50) * 20;
 		float y = (rand() % 36) * 20;
 
 		// Checks collectable isn't spawning above water
@@ -528,7 +528,7 @@ void Game::AIRun(sf::RenderWindow & window, const int& screenWidth, const int& s
 	for (int collectableIndex = 0; collectableIndex < maxActiveCollectables; collectableIndex++)
 	{
 		// Finds random screen position
-		float x = (rand() % 50) * 20;
+		const float x = (rand() % 50) * 20;
 		float y = (rand() % 36) * 20;
 
 		// Checks collectable isn't spawning above water

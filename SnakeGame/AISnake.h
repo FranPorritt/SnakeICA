@@ -5,12 +5,13 @@
 class AISnake : public Snake
 {
 private:
-	bool isDirectionSet = false;
+	std::vector<int> AICollectableDistance;
+	sf::Vector2f AITargetCollectable;
+
 	// Determines chance of snake colliding with the edge of the screen, the higher the number the less chance of hitting the wall.
 	int edgeChance = 5;
 
 	// Pathfinding
-	std::vector<int> AICollectableDistance;
 	int distance = 0;
 	int closestValue = 76000;
 	int closestValuePos = 0;
@@ -23,11 +24,11 @@ private:
 	int fifthClosestValue = 0;
 	int fifthClosestValuePos = 0;
 
-	sf::Vector2f AITargetCollectable;
 	int xTargetDistance = 0;
 	int yTargetDistance = 0;
 
 	bool isPlayerColliding = false;
+	bool isDirectionSet = false;
 
 public:
 	AISnake(sf::Vector2f screenPosArg, sf::Color colorArg, float radiusArg);

@@ -18,14 +18,11 @@ class Snake
 protected:
 	sf::Vector2f screenPos;
 	sf::Color color;
-	float radius;
+	const float radius = 0;
+	const float diameter = radius * 2;
 	sf::Vector2f headPos;
 	
-	EDirection direction = EDirection::eNorth;
-
-	bool isDead = false;
-	bool isDrowning = false;
-	bool isAboveWater = false;
+	EDirection direction = EDirection::eNorth;	
 
 	// Air variables
 	int movementSteps = 0;
@@ -36,6 +33,10 @@ protected:
 	int WhiteBonusLength = 3;
 	int PurpleBonusLength = 7;
 	int score = 0;
+	
+	bool isDead = false;
+	bool isDrowning = false;
+	bool isAboveWater = false;
 
 	bool isAIColliding = false;
 

@@ -10,9 +10,9 @@ protected:
 	sf::Text pauseText;
 	sf::Text resumeText;
 	sf::Text quitText;
-
-	int fontSize = 50;
+		
 	sf::Color fontColor = sf::Color::Red;
+	int fontSize = 50;
 
 public:
 	Pause();

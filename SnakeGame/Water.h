@@ -8,6 +8,9 @@ protected:
 	sf::Color color;
 	sf::Vector2f waterSize;
 
+	const float leakRate = 20.0f;
+	const float menuLeakRate = 0.05f;
+
 public:
 	Water(sf::Color colorArg, sf::Vector2f waterSizeArg);
 	~Water();
